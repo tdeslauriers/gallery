@@ -1,0 +1,10 @@
+micronaut:
+  application:
+    name: gallery
+---
+datasources:
+  default:
+    url: jdbc:mysql://${GALLERY_TESTDB_JAVA_IP}/${GALLERY_TESTDB_JAVA_DBNAME}?serverTimezone=UTC
+    username: ${GALLERY_TESTDB_JAVA_USER}
+    password: ${GALLERY_TESTDB_JAVA_PASSWORD}
+    sql-dialect: 'MYSQL'
