@@ -8,3 +8,8 @@ datasources:
     username: ${GALLERY_TESTDB_JAVA_USER}
     password: ${GALLERY_TESTDB_JAVA_PASSWORD}
     sql-dialect: 'MYSQL'
+---
+flyway:
+  datasources:
+    default:
+      locations: classpath:databasemigrations
