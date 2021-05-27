@@ -43,6 +43,7 @@ public class AlbumRepositoryTest {
 		
 		var albums = albumDao.findAll();
 		assertTrue(albums.iterator().hasNext());
+		albums.forEach(album -> System.out.println(album.toString()));
 		
 		albumDao.deleteById(find.getId());
 		var deleted = albumDao.findById(find.getId());
