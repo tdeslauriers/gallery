@@ -5,6 +5,7 @@ import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
 import io.micronaut.data.repository.CrudRepository;
+import world.deslauriers.domain.Album;
 import world.deslauriers.domain.Image;
 
 @Repository
@@ -13,4 +14,7 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
 
     @Join(value = "album", type = Join.Type.LEFT_FETCH)
     Iterable<Image> findAll();
+
+    @Join(value = "album", type = Join.Type.LEFT_FETCH)
+    Iterable<Image> findByAlbumAndPublished(Album album, Boolean published);
 }

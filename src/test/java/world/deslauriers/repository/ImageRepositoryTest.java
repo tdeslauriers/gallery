@@ -59,4 +59,16 @@ public class ImageRepositoryTest {
         var pics = imageRepository.findAll();
         pics.forEach(image -> System.out.println(image.toString()));
     }
+
+    private static final String ALBUM_2021 = "2021";
+
+    @Test
+    void testFindByAlbum(){
+
+        var album = albumRepository.findByAlbum(ALBUM_2021).get();
+        var images = imageRepository.findByAlbumAndPublished(album, true);
+        images.forEach(image -> System.out.println(image.toString()));
+        assertNotNull(images);
+        images.forEach(image -> assertEquals(ALBUM_2021, image.getAlbum().getAlbum()));
+    }
 }
