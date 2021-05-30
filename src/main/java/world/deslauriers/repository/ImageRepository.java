@@ -8,13 +8,16 @@ import io.micronaut.data.repository.CrudRepository;
 import world.deslauriers.domain.Album;
 import world.deslauriers.domain.Image;
 
+import java.util.List;
+
 @Repository
 @JdbcRepository(dialect = Dialect.MYSQL)
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
+    // find all
     @Join(value = "album", type = Join.Type.LEFT_FETCH)
-    Iterable<Image> findAll();
+    List<Image> findByPublished(Boolean published);
 
     @Join(value = "album", type = Join.Type.LEFT_FETCH)
-    Iterable<Image> findByAlbumAndPublished(Album album, Boolean published);
+    List<Image> findByAlbumAndPublished(Album album, Boolean published);
 }

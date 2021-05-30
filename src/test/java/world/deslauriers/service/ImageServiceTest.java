@@ -25,6 +25,7 @@ public class ImageServiceTest {
     @Test
     void testImageServiceCrud(){
 
+        // by album
         var images = imageService.getImagesByAlbum(ALBUM_2021);
         images.forEach(imageDto -> {
             System.out.println(imageDto.toString());
@@ -32,10 +33,15 @@ public class ImageServiceTest {
             assertNotNull(imageDto.getId());
             assertNotNull(imageDto.getFilename());
             assertTrue(imageDto.getPublished());
+
         });
 
         images = imageService.getImagesByAlbum(ALBUM_WRONG);
         assertNull(images);
+
+        // all
+        images = imageService.getAll();
+        images.forEach(imageDto -> System.out.println(imageDto.toString()));
     }
 
 }

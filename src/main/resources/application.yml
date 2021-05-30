@@ -13,7 +13,3 @@ flyway:
   datasources:
     default:
       locations: classpath:databasemigrations
----
-album:
-  default:
-    size: 50
