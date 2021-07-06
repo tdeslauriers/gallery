@@ -1,6 +1,5 @@
 package world.deslauriers.service;
 
-import io.micronaut.context.annotation.Value;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.ImageDto;
