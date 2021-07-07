@@ -56,7 +56,7 @@ public class ImageRepositoryTest {
         System.out.println("pic uuid returned: " + uuidName);
         assertEquals(uuid, uuidName);
 
-        var pics = imageRepository.findAll();
+        var pics = imageRepository.findByPublished(false);
         pics.forEach(image -> System.out.println(image.toString()));
     }
 

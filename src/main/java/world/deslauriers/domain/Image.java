@@ -8,9 +8,7 @@ import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
 import io.micronaut.data.annotation.Relation.Kind;
 import io.micronaut.data.jdbc.annotation.JoinTable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.annotation.Nullable;
 import javax.validation.constraints.NotNull;
@@ -18,7 +16,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Introspected

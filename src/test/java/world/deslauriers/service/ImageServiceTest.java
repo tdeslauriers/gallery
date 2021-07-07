@@ -40,7 +40,7 @@ public class ImageServiceTest {
         assertNull(images);
 
         // all
-        images = imageService.getAll();
+        images = imageService.getAllPublished();
         images.forEach(imageDto -> System.out.println(imageDto.toString()));
     }
 

@@ -25,14 +25,15 @@ public class ImageServiceImpl implements ImageService {
         this.albumService = albumService;
     }
 
+
     @Override
-    public List<ImageDto> getAll(){
+    public List<ImageDto> getAllPublished(){
 
-       var pics = imageRepository.findByPublished(true);
-       var images = new ArrayList<ImageDto>(pics.size());
-       pics.forEach(pic -> images.add(loadImageDto(pic)));
+        var pics = imageRepository.findByPublished(true);
+        var images = new ArrayList<ImageDto>(pics.size());
+        pics.forEach(pic -> images.add(loadImageDto(pic)));
 
-       return images;
+        return images;
     }
 
     @Override

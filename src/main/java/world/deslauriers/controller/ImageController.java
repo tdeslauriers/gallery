@@ -1,9 +1,13 @@
 package world.deslauriers.controller;
 
+import io.micronaut.http.MediaType;
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
+import io.micronaut.http.annotation.Produces;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
+import io.micronaut.security.annotation.Secured;
+import io.micronaut.security.rules.SecurityRule;
 import world.deslauriers.service.ImageService;
 import world.deslauriers.service.dto.ImageDto;
 
@@ -21,12 +25,16 @@ public class ImageController {
         this.imageService = imageService;
     }
 
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Produces(MediaType.APPLICATION_JSON)
     @Get
-    public List<ImageDto> getAll(){
+    public List<ImageDto> getAllPublished(){
 
-        return imageService.getAll();
+        return imageService.getAllPublished();
     }
 
+    @Secured(SecurityRule.IS_AUTHENTICATED)
+    @Produces(MediaType.APPLICATION_JSON)
     @Get("/{album}")
     public List<ImageDto> getByAlbum(String album){
 

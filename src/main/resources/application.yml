@@ -1,6 +1,14 @@
 micronaut:
   application:
     name: gallery
+  server: 8081
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            validation:
+              secret: ${GATEWAY_STAGE_JWT_SIG_GEN}
 ---
 datasources:
   default:
