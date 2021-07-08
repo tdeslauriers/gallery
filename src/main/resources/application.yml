@@ -1,7 +1,8 @@
 micronaut:
   application:
     name: gallery
-  server: 8081
+  server:
+    port: 8081
   security:
     token:
       jwt:

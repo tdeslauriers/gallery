@@ -9,10 +9,10 @@ INSERT INTO image (
     FALSE,
     3
 ), (
-    UNHEX(REPLACE(UUID(), "-", "")),
-    "2018-01-01",
-    FALSE,
-    4
+        UNHEX(REPLACE(UUID(), "-", "")),
+        "2018-01-01",
+        FALSE,
+        4
 );
 
 
