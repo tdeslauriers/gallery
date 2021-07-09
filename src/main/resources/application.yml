@@ -10,6 +10,10 @@ micronaut:
           secret:
             validation:
               secret: ${GATEWAY_STAGE_JWT_SIG_GEN}
+  ssl:
+    enabled: true
+    port: 8444 # gateway using 8443
+    buildSelfSigned: true
 ---
 datasources:
   default:
