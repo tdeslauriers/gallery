@@ -14,7 +14,14 @@ CREATE TABLE image (
     description VARCHAR(255),
     date DATE,
     published BOOLEAN,
-    album_id INT,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE album_image (
+    id INT NOT NULL AUTO_INCREMENT,
+    album_id INT NOT NULL,
+    image_id INT NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (album_id) REFERENCES album (id)
+    CONSTRAINT fk_album_id FOREIGN KEY (album_id) REFERENCES album (id),
+    CONSTRAINT fk_image_id FOREIGN KEY (image_id) REFERENCES image (id)
 );

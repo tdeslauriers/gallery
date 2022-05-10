@@ -1,7 +1,5 @@
 plugins {
-    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("io.micronaut.application") version "$micronautPluginVersion"
-    id("io.freefair.lombok") version "$lombokPluginVersion"
 }
 
 version = "0.1"
@@ -22,8 +20,7 @@ micronaut {
 }
 
 dependencies {
-	compileOnly("org.projectlombok:lombok:$lombokVersion")
-	annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
 	annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-validation")
@@ -43,9 +40,13 @@ dependencies {
 
     // crypto
     // ssl netty issue: does not like self-signed out of the box
-    implementation("org.bouncycastle:bcpkix-jdk15on:1.65")
+    implementation("org.bouncycastle:bcpkix-jdk15on:$bouncyCastleVersion")
 
     runtimeOnly("ch.qos.logback:logback-classic")
+
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:mysql")
+    testImplementation("org.testcontainers:testcontainers")
 }
 
 
@@ -54,8 +55,8 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("14")
-    targetCompatibility = JavaVersion.toVersion("14")
+    sourceCompatibility = JavaVersion.toVersion("18")
+    targetCompatibility = JavaVersion.toVersion("18")
 }
 
 
