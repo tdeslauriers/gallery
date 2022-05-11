@@ -1,10 +1,8 @@
 package world.deslauriers.service;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Assertions;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-
-import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,8 +26,8 @@ public class AlbumServiceTest {
         var album = albumService.getByAlbum(ALBUM_2021);
         System.out.println("Album by String: " + album.get());
         assertNotNull(album);
-        assertEquals(ALBUM_2021, album.get().getAlbum());
-        assertNull(album.get().getImages()); // not needed for this service call.  no join.
+        assertEquals(ALBUM_2021, album.get().album());
+
 
         album = albumService.getByAlbum(ALBUM_WRONG);
         System.out.println("Incorrect album name given: " + album.toString());

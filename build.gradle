@@ -55,8 +55,8 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion("18")
-    targetCompatibility = JavaVersion.toVersion("18")
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
 }
 
 

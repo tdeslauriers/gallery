@@ -1,21 +1,22 @@
 package world.deslauriers.repository;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Assertions;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import world.deslauriers.domain.Album;
 import world.deslauriers.domain.Image;
 
-import javax.inject.Inject;
+
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MicronautTest
-public class ImageRepositoryTest {
+public class ImageDaoTest {
 
     @Inject
     private final ImageRepository imageRepository;
@@ -23,16 +24,13 @@ public class ImageRepositoryTest {
     @Inject
     private final AlbumRepository albumRepository;
 
-    public ImageRepositoryTest(ImageRepository imageRepository, AlbumRepository albumRepository) {
+    public ImageDaoTest(ImageRepository imageRepository, AlbumRepository albumRepository) {
         this.imageRepository = imageRepository;
         this.albumRepository = albumRepository;
     }
 
     @Test
     void testImageDaoCrud(){
-
-        var art = new Album("Artwork");
-        art = albumRepository.save(art);
 
         var uuid = UUID.randomUUID();
         byte[] uuidBytes = new byte[16];
@@ -41,16 +39,15 @@ public class ImageRepositoryTest {
                 .putLong(uuid.getMostSignificantBits())
                 .putLong(uuid.getLeastSignificantBits());
 
-        var pic = new Image(uuidBytes, "test title", "test description", LocalDate.now(), false, art);
+        var pic = new Image(uuidBytes, "test title", "test description", LocalDate.now(), false, null);
         pic = imageRepository.save(pic);
-        assertNotNull(pic.getId());
-        assertEquals("test title", pic.getTitle());
-        assertEquals("test description", pic.getDescription());
-        System.out.println("UUID generated: " + pic.getFilename().toString());
-        assertEquals("Artwork", pic.getAlbum().getAlbum());
+        assertNotNull(pic.id());
+        assertEquals("test title", pic.title());
+        assertEquals("test description", pic.description());
+        System.out.println("UUID generated: " + Arrays.toString(pic.filename()));
 
         // convert binary back to uuid
-        var buf = ByteBuffer.wrap(pic.getFilename());
+        var buf = ByteBuffer.wrap(pic.filename());
         var uuidName = new UUID(buf.getLong(), buf.getLong());
         System.out.println("uuid generated: " + uuid);
         System.out.println("pic uuid returned: " + uuidName);
@@ -60,15 +57,4 @@ public class ImageRepositoryTest {
         pics.forEach(image -> System.out.println(image.toString()));
     }
 
-    private static final String ALBUM_2021 = "2021";
-
-    @Test
-    void testFindByAlbum(){
-
-        var album = albumRepository.findByAlbum(ALBUM_2021).get();
-        var images = imageRepository.findByAlbumAndPublished(album, true);
-        images.forEach(image -> System.out.println(image.toString()));
-        assertNotNull(images);
-        images.forEach(image -> assertEquals(ALBUM_2021, image.getAlbum().getAlbum()));
-    }
 }

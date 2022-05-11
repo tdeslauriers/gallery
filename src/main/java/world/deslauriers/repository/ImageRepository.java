@@ -15,9 +15,6 @@ import java.util.List;
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
     // find all
-    @Join(value = "album", type = Join.Type.LEFT_FETCH)
     List<Image> findByPublished(Boolean published);
 
-    @Join(value = "album", type = Join.Type.LEFT_FETCH)
-    List<Image> findByAlbumAndPublished(Album album, Boolean published);
 }

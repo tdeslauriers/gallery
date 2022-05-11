@@ -7,11 +7,12 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.security.authentication.UsernamePasswordCredentials;
 import io.micronaut.security.token.jwt.render.BearerAccessRefreshToken;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import world.deslauriers.service.dto.ImageDto;
 
-import javax.inject.Inject;
+
 import java.util.List;
 
 @MicronautTest
@@ -44,7 +45,7 @@ public class ImageControllerTest {
                         Argument.of(List.class, ImageDto.class));
         Assertions.assertNotNull(images);
         images.forEach(imageDto -> {
-            Assertions.assertTrue(imageDto.getPublished());
+            Assertions.assertTrue(imageDto.published());
             System.out.println("Get All Images: " + imageDto.toString());
         });
 
@@ -56,8 +57,8 @@ public class ImageControllerTest {
                         Argument.of(List.class, ImageDto.class));
         images.forEach(imageDto -> {
             System.out.println("Get By Album: " + imageDto.toString());
-            Assertions.assertEquals(2021, imageDto.getDate().getYear());
-            Assertions.assertTrue(imageDto.getPublished());
+            Assertions.assertEquals(2021, imageDto.date().getYear());
+            Assertions.assertTrue(imageDto.published());
         });
     }
 }

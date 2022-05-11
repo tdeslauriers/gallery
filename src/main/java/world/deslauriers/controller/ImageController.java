@@ -8,10 +8,10 @@ import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
+import jakarta.inject.Inject;
 import world.deslauriers.service.ImageService;
 import world.deslauriers.service.dto.ImageDto;
 
-import javax.inject.Inject;
 import java.util.List;
 
 @ExecuteOn(TaskExecutors.IO)

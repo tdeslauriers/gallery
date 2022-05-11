@@ -1,12 +1,12 @@
 package world.deslauriers.service;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Album;
 import world.deslauriers.repository.AlbumRepository;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.util.Optional;
 
 @Singleton

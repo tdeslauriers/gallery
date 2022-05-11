@@ -1,11 +1,11 @@
 package world.deslauriers.service;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.ImageDto;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,27 +39,21 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public List<ImageDto> getImagesByAlbum(String album){
 
-        var a = albumService.getByAlbum(album);
-        if (a.isPresent()) {
-            var pics = imageRepository.findByAlbumAndPublished(a.get(), true);
-            var images = new ArrayList<ImageDto>(pics.size());
-            pics.forEach(pic -> images.add(loadImageDto(pic)));
-            return images;
-        }
+
         return null;
     }
 
     private ImageDto loadImageDto(Image pic){
         if (pic != null){
-            var buffer = ByteBuffer.wrap(pic.getFilename());
+            var buffer = ByteBuffer.wrap(pic.filename());
             var uuid = new UUID(buffer.getLong(), buffer.getLong());
             var image = new ImageDto(
-                    pic.getId(),
+                    pic.id(),
                     uuid.toString(),
-                    pic.getTitle(),
-                    pic.getDescription(),
-                    pic.getDate(),
-                    pic.getPublished());
+                    pic.title(),
+                    pic.description(),
+                    pic.date(),
+                    pic.published());
             return image;
         }
         return null;

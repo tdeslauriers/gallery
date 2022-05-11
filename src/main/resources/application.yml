@@ -9,20 +9,25 @@ micronaut:
         signatures:
           secret:
             validation:
-              secret: ${GATEWAY_STAGE_JWT_SIG_GEN}
+              secret: ${JWT_GENERATOR_SIGNATURE_SECRET} # fix this; wrong
   ssl:
     enabled: true
     port: 8444 # gateway using 8443
     buildSelfSigned: true
+  http:
+    client:
+      ssl:
+        enabled: true
+        build-self-signed: true
 ---
 datasources:
   default:
-    url: jdbc:mysql://${GALLERY_TESTDB_JAVA_IP}/${GALLERY_TESTDB_JAVA_DBNAME}?serverTimezone=UTC
-    username: ${GALLERY_TESTDB_JAVA_USER}
-    password: ${GALLERY_TESTDB_JAVA_PASSWORD}
+    url: ${GALLERY_JDBC_URL}
+    username: ${GALLERY_JDBC_USER}
+    password: ${GALLERY_JDBC_PASSWORD}
     sql-dialect: 'MYSQL'
 ---
 flyway:
   datasources:
     default:
-      locations: classpath:databasemigrations
+      enabled: true

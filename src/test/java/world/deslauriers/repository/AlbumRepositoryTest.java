@@ -4,8 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.inject.Inject;
-
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
@@ -27,26 +26,25 @@ public class AlbumRepositoryTest {
 		var judo = new Album("Judo");
 		
 		judo = albumDao.save(judo);
-		assertNotNull(judo.getId());
-		assertEquals("Judo", judo.getAlbum());
+		assertNotNull(judo.id());
+		assertEquals("Judo", judo.album());
 		
-		var find = albumDao.findById(judo.getId()).get();
-		assertNotNull(find.getId());
-		assertEquals("Judo", find.getAlbum());
-		
-		find.setAlbum("Art");
+		var find = albumDao.findById(judo.id()).get();
+		assertNotNull(find.id());
+		assertEquals("Judo", find.album());
+
 		var update = albumDao.update(find);
-		assertEquals("Art", update.getAlbum());
+		assertEquals("Art", update.album());
 		
-		var find1 = albumDao.findById(update.getId()).get();
-		assertEquals("Art", find1.getAlbum());
+		var find1 = albumDao.findById(update.id()).get();
+		assertEquals("Art", find1.album());
 		
 		var albums = albumDao.findAll();
 		assertTrue(albums.iterator().hasNext());
 		albums.forEach(album -> System.out.println(album.toString()));
 		
-		albumDao.deleteById(find.getId());
-		var deleted = albumDao.findById(find.getId());
+		albumDao.deleteById(find.id());
+		var deleted = albumDao.findById(find.id());
 		assertTrue(deleted.isEmpty());
 	}
 }

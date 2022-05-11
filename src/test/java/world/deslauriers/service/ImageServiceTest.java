@@ -1,10 +1,8 @@
 package world.deslauriers.service;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import org.junit.jupiter.api.Assertions;
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-
-import javax.inject.Inject;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,9 +28,9 @@ public class ImageServiceTest {
         images.forEach(imageDto -> {
             System.out.println(imageDto.toString());
             assertNotNull(imageDto);
-            assertNotNull(imageDto.getId());
-            assertNotNull(imageDto.getFilename());
-            assertTrue(imageDto.getPublished());
+            assertNotNull(imageDto.id());
+            assertNotNull(imageDto.filename());
+            assertTrue(imageDto.published());
 
         });
 
