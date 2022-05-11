@@ -11,12 +11,12 @@ import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import world.deslauriers.domain.Album;
 
 @MicronautTest
-public class AlbumRepositoryTest {
+public class AlbumDaoTest {
 	
 	@Inject
 	private final AlbumRepository albumDao;
 
-	public AlbumRepositoryTest(AlbumRepository albumDao) {
+	public AlbumDaoTest(AlbumRepository albumDao) {
 		this.albumDao = albumDao;
 	}
 	
@@ -33,12 +33,11 @@ public class AlbumRepositoryTest {
 		assertNotNull(find.id());
 		assertEquals("Judo", find.album());
 
-		var update = albumDao.update(find);
-		assertEquals("Art", update.album());
-		
-		var find1 = albumDao.findById(update.id()).get();
-		assertEquals("Art", find1.album());
-		
+		var update = new Album(find.id(), "Soccer");
+
+		find = albumDao.update(update);
+		assertEquals("Soccer", find.album());
+
 		var albums = albumDao.findAll();
 		assertTrue(albums.iterator().hasNext());
 		albums.forEach(album -> System.out.println(album.toString()));
@@ -46,5 +45,8 @@ public class AlbumRepositoryTest {
 		albumDao.deleteById(find.id());
 		var deleted = albumDao.findById(find.id());
 		assertTrue(deleted.isEmpty());
+
+		var art = albumDao.findByAlbum("art");
+		System.out.println(art);
 	}
 }

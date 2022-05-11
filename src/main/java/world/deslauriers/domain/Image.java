@@ -15,11 +15,11 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Introspected
-@MappedEntity(value = "image")
+@MappedEntity
 public record Image(
 
-	@Id @GeneratedValue(value = Type.IDENTITY) Long id,
-	byte[] filename,// uuid must by byte array for mysql binary(16)
+	@Id @GeneratedValue Long id,
+	byte[] filename, // uuid must by byte array for mysql binary(16)
 	@Nullable String title,
 	@Nullable String description,
 	@NonNull LocalDate date,
