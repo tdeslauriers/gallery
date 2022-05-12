@@ -14,7 +14,5 @@ import java.util.List;
 @JdbcRepository(dialect = Dialect.MYSQL)
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
-    // find all
-    List<Image> findByPublished(Boolean published);
 
 }

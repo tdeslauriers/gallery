@@ -5,11 +5,11 @@ INSERT INTO image (
 ) VALUES (
     UNHEX(REPLACE(UUID(), "-", "")),
     "2021-01-01",
-    FALSE
+    TRUE
 ), (
     UNHEX(REPLACE(UUID(), "-", "")),
     "2018-01-01",
-    FALSE
+    TRUE
 );
 
 INSERT INTO album ( album) VALUES ("2018"), ("2021"), ("Art");

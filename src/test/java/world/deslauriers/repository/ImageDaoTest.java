@@ -53,8 +53,6 @@ public class ImageDaoTest {
         System.out.println("pic uuid returned: " + uuidName);
         assertEquals(uuid, uuidName);
 
-        var pics = imageRepository.findByPublished(false);
-        pics.forEach(image -> System.out.println(image.toString()));
     }
 
 }
