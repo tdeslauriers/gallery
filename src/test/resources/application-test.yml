@@ -7,9 +7,11 @@ micronaut:
   http:
     client:
       ssl:
-        enabled: false
-        build-self-signed: false
+        enabled: true
+        build-self-signed: true
 datasources:
   default:
     url: jdbc:tc:mysql:8:///db
     driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+test:
+  bearer: ${TEST_BEARER_TOKEN}

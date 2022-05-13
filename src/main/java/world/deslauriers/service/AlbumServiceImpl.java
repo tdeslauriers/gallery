@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import world.deslauriers.domain.Album;
 import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.service.dto.AlbumDto;
 import world.deslauriers.service.dto.ImageDto;
@@ -27,6 +28,10 @@ public class AlbumServiceImpl implements AlbumService {
         this.imageService = imageService;
     }
 
+    @Override
+    public Iterable<Album> getAll(){
+        return albumRepository.findAll();
+    }
 
     @Override
     public Optional<AlbumDto> getByAlbum(String album) {
