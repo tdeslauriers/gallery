@@ -14,7 +14,6 @@ import io.micronaut.runtime.Micronaut;
         labels = @Label(key = "app", value = "gallery"),
         ports = @Port(name = "http", containerPort = 8081)
 )
-@DockerBuild(group = "tdeslauriers", name = "gallery")
 public class Application {
 
     public static void main(String[] args) {
