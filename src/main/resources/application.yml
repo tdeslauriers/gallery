@@ -10,15 +10,15 @@ micronaut:
           secret:
             validation:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET} # fix this; wrong
-  ssl:
-    enabled: true
-    port: 8444 # gateway using 8443
-    buildSelfSigned: true
-  http:
-    client:
-      ssl:
-        enabled: true
-        build-self-signed: true
+#  ssl:
+#    enabled: true
+#    port: 8444 # gateway using 8443
+#    buildSelfSigned: true
+#  http:
+#    client:
+#      ssl:
+#        enabled: true
+#        build-self-signed: true
 ---
 datasources:
   default:

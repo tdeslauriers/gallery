@@ -2,9 +2,12 @@ plugins {
     id("io.micronaut.application") version "$micronautPluginVersion"
 }
 
-version = "0.1"
+version = "0.2"
 group = "world.deslauriers"
 
+dockerBuild {
+    images = ["tdeslauriers/gallery:${project.version}"]
+}
 repositories {
     mavenCentral()
 
@@ -20,9 +23,10 @@ micronaut {
 }
 
 dependencies {
-
+    annotationProcessor("io.dekorate:kubernetes-annotations")
 	annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut:micronaut-validation")
+    implementation("io.dekorate:kubernetes-annotations")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-runtime")
