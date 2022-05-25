@@ -2,7 +2,13 @@ micronaut:
   application:
     name: gallery
   server:
-    port: 8081
+    port: 8080
+    cors:
+      enabled: true
+      configurations:
+        web:
+          allowedOrigins:
+            - ${CORS_URL}
   security:
     token:
       jwt:
@@ -25,7 +31,7 @@ datasources:
     url: ${GALLERY_JDBC_URL}
     username: ${GALLERY_JDBC_USER}
     password: ${GALLERY_JDBC_PASSWORD}
-    sql-dialect: 'MYSQL'
+    sql-dialect: ${GALLERY_JDBC_DIALECT}
 ---
 flyway:
   datasources:

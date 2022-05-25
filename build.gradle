@@ -2,7 +2,7 @@ plugins {
     id("io.micronaut.application") version "$micronautPluginVersion"
 }
 
-version = "0.2"
+version = '0.2'
 group = "world.deslauriers"
 
 dockerBuild {
