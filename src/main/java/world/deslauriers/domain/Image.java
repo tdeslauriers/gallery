@@ -11,6 +11,7 @@ import io.micronaut.data.annotation.Relation;
 import io.micronaut.data.jdbc.annotation.JoinTable;
 
 import javax.validation.constraints.NotNull;
+import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -25,12 +26,16 @@ public record Image(
 	@NonNull LocalDate date,
 	@NonNull Boolean published,
 
+	Blob thumbnail,
+
+	Blob image,
+
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
 	@JoinTable(name = "album_image")
 	Set<AlbumImage> albumImages
 
 ){
-	public Image(byte[] filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, Set<AlbumImage> albumImages) {
-		this(null, filename, title, description, date, published, albumImages);
+	public Image(byte[] filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, Blob thumbnail, Blob image) {
+		this(null, filename, title, description, date, published, thumbnail, image, null);
 	}
 }

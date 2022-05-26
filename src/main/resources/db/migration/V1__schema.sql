@@ -14,6 +14,8 @@ CREATE TABLE image (
     description VARCHAR(255),
     date DATE,
     published BOOLEAN,
+    thumbnail MEDIUMBLOB,
+    image MEDIUMBLOB,
     PRIMARY KEY (id)
 );
 

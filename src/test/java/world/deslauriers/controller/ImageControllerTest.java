@@ -27,7 +27,10 @@ public class ImageControllerTest {
     private static final String VALID_PASSWORD = "#1-Pod-Racer!";
 
     @Test
-    void testImageCrud(){}
+    void testImageCrud(){
+
+
+    }
 
 
 }
