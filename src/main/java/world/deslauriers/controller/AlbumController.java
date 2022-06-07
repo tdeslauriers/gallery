@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
-@Controller("/albums")
+@Controller("/api/gallery/albums")
 public class AlbumController {
 
     @Inject

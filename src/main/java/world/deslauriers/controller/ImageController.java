@@ -10,7 +10,7 @@ import world.deslauriers.service.ImageService;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
-@Controller("/images")
+@Controller("/api/gallery/images")
 public class ImageController {
 
     @Inject
