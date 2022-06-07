@@ -28,14 +28,14 @@ public class AlbumControllerTest {
     @Test
     void testAlbumRest(){
 
-        var req = HttpRequest.GET("/api/gallery/albums").header("Authorization", "Bearer " + token);
+        var req = HttpRequest.GET("/albums").header("Authorization", "Bearer " + token);
         var albums = client
                 .toBlocking()
                 .retrieve(req, Argument.of(Iterable.class, Album.class));
         assertNotNull(albums);
         assertEquals(3, albums.spliterator().getExactSizeIfKnown());
 
-        req = HttpRequest.GET("/api/gallery/albums/2018").header("Authorization", "Bearer " + token);
+        req = HttpRequest.GET("/albums/2018").header("Authorization", "Bearer " + token);
         var album = client
                 .toBlocking()
                 .retrieve(req, AlbumDto.class);
