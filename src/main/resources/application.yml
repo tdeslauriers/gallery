@@ -8,7 +8,7 @@ micronaut:
       configurations:
         web:
           allowedOrigins:
-            - ${CORS_URL}
+            - ${CORS_URLS}
   security:
     token:
       jwt:

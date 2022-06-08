@@ -18,7 +18,7 @@ import io.micronaut.runtime.Micronaut;
             @Env(name = "GALLERY_JDBC_USER", configmap = "gallery-svc-config", value = "jdbc_username"),
             @Env(name = "GALLERY_JDBC_DRIVER", configmap = "gallery-svc-config", value = "jdbc_driver"),
             @Env(name = "GALLERY_JDBC_DIALECT", configmap = "gallery-svc-config", value = "jdbc_dialect"),
-            @Env(name = "CORS_URL", configmap = "gallery-svc-config", value = "cors_url"),
+            @Env(name = "CORS_URLS", configmap = "gallery-svc-config", value = "cors_urls"),
             @Env(name = "GALLERY_JDBC_PASSWORD", secret = "gallery-mariadb-galera", value = "mariadb-password"),
             @Env(name = "JWT_GENERATOR_SIGNATURE_SECRET", secret = "jwt", value = "signature-pw"),
         }
