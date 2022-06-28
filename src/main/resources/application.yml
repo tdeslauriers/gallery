@@ -2,7 +2,7 @@ micronaut:
   application:
     name: gallery
   server:
-    port: 8080
+    port: 8081
     cors:
       enabled: true
       configurations:

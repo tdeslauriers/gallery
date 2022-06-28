@@ -46,7 +46,7 @@ public class AlbumDaoTest {
 		var deleted = albumDao.findById(find.id());
 		assertTrue(deleted.isEmpty());
 
-		var art = albumDao.findByAlbum("art");
-		System.out.println(art);
+		// test data, includes xrefs
+//		var xref = albumDao.findByAlbum("2018");
 	}
 }

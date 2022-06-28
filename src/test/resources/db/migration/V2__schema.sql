@@ -3,11 +3,11 @@ INSERT INTO image (
    date,
    published
 ) VALUES (
-    UNHEX(REPLACE(UUID(), "-", "")),
+    "e2256481-4e97-42d5-89c0-78a3c49e760d",
     "2021-01-01",
     TRUE
 ), (
-    UNHEX(REPLACE(UUID(), "-", "")),
+    "64abaa67-85c1-430f-9780-a76bdaeacff2",
     "2018-01-01",
     TRUE
 );

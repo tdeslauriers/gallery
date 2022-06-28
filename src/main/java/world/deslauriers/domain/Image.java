@@ -18,22 +18,22 @@ import java.util.Set;
 public record Image(
 
 	@Id @GeneratedValue Long id,
-	byte[] filename, // uuid must by byte array for mysql binary(16)
+	String filename, // string of UUID
 	@Nullable String title,
 	@Nullable String description,
 	@NonNull LocalDate date,
 	@NonNull Boolean published,
 
-	Blob thumbnail,
+	byte[] thumbnail,
 
-	Blob image,
+	byte[] image,
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
 	@JoinTable(name = "album_image")
 	Set<AlbumImage> albumImages
 
 ){
-	public Image(byte[] filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, Blob thumbnail, Blob image) {
+	public Image(String filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, byte[] thumbnail, byte[] image) {
 		this(null, filename, title, description, date, published, thumbnail, image, null);
 	}
 }

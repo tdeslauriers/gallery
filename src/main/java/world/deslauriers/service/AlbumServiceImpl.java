@@ -5,9 +5,10 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Album;
+import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.service.dto.AlbumDto;
-import world.deslauriers.service.dto.ImageDto;
+import world.deslauriers.service.dto.ThumbnailDto;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -38,11 +39,11 @@ public class AlbumServiceImpl implements AlbumService {
 
         var selected = albumRepository.findByAlbum(album);
         if (selected.isPresent()){
-            var images = new HashSet<ImageDto>(selected.get().albumImages().size());
+            var thumbnails = new HashSet<ThumbnailDto>(selected.get().albumImages().size());
             selected.get().albumImages().forEach(albumImage -> {
-                if (albumImage.image().published()) images.add(imageService.loadImageDto(albumImage.image()));
+                if (albumImage.image().published()) thumbnails.add(imageService.loadThumbnailDto(albumImage.image()));
             });
-            return Optional.of(new AlbumDto(selected.get().id(), selected.get().album(), images));
+            return Optional.of(new AlbumDto(selected.get().id(), selected.get().album(), thumbnails));
         }
         return Optional.empty();
     }

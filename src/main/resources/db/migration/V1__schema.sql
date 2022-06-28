@@ -3,14 +3,14 @@ DROP TABLE IF EXISTS image;
 
 CREATE TABLE album (
     id INT NOT NULL AUTO_INCREMENT,
-    album VARCHAR(50) NOT NULL,
+    album VARCHAR(32) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE image (
     id INT NOT NULL AUTO_INCREMENT,
-    filename BINARY(16) NOT NULL,
-    title VARCHAR(255),
+    filename VARCHAR(64),
+    title VARCHAR(64),
     description VARCHAR(255),
     date DATE,
     published BOOLEAN,

@@ -1,6 +1,7 @@
 package world.deslauriers.service.dto;
 
 import io.micronaut.core.annotation.Introspected;
+import world.deslauriers.domain.Image;
 
 import java.util.Set;
 
@@ -8,5 +9,5 @@ import java.util.Set;
 public record AlbumDto(
         Long id,
         String album,
-        Set<ImageDto> images
+        Set<ThumbnailDto> images
 ) {}

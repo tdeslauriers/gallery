@@ -26,13 +26,13 @@ public class AlbumController {
     }
 
     // drawer/menu
-    @Secured({"GALLERY_READ", "GALLERY_ADMIN"})
+    @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get
     public Iterable<Album> getAll(){
         return albumService.getAll();
     }
 
-    @Secured({"GALLERY_READ", "GALLERY_ADMIN"})
+    @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/{album}")
     public Optional<AlbumDto> getByAlbum(String album){
 

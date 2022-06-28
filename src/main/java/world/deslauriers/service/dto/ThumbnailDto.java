@@ -5,11 +5,12 @@ import io.micronaut.core.annotation.Introspected;
 import java.time.LocalDate;
 
 @Introspected
-public record ImageDto(
+public record ThumbnailDto(
         Long id,
         String filename,
         String title,
         String description,
         LocalDate date,
-        Boolean published
+        Boolean published,
+        byte[] thumbnail
 ) {}

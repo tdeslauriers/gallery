@@ -4,10 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.ImageRepository;
-import world.deslauriers.service.dto.ImageDto;
-
-import java.nio.ByteBuffer;
-import java.util.UUID;
+import world.deslauriers.service.dto.ThumbnailDto;
 
 @Singleton
 public class ImageServiceImpl implements ImageService {
@@ -20,15 +17,15 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageDto loadImageDto(Image pic){
-            var buffer = ByteBuffer.wrap(pic.filename());
-            var uuid = new UUID(buffer.getLong(), buffer.getLong());
-            return new ImageDto(
+    public ThumbnailDto loadThumbnailDto(Image pic){
+
+            return new ThumbnailDto(
                     pic.id(),
-                    uuid.toString(),
+                    pic.filename(),
                     pic.title(),
                     pic.description(),
                     pic.date(),
-                    pic.published());
+                    pic.published(),
+                    pic.thumbnail());
     }
 }

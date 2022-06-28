@@ -12,7 +12,7 @@ import io.micronaut.runtime.Micronaut;
         replicas = 3,
         imagePullPolicy = ImagePullPolicy.Always,
         labels = @Label(key = "app", value = "gallery"),
-        ports = @Port(name = "http", containerPort = 8080),
+        ports = @Port(name = "http", containerPort = 8081),
         envVars = {
             @Env(name = "GALLERY_JDBC_URL", configmap = "gallery-svc-config", value = "jdbc_url"),
             @Env(name = "GALLERY_JDBC_USER", configmap = "gallery-svc-config", value = "jdbc_username"),
