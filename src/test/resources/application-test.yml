@@ -1,17 +1,5 @@
 micronaut:
   application:
-    name: auth
-#  ssl:
-#    enabled: false
-#    build-self-signed: false
-#  http:
-#    client:
-#      ssl:
-#        enabled: true
-#        build-self-signed: true
-datasources:
-  default:
-    url: jdbc:tc:mysql:8:///db
-    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    name: gallery
 test:
   bearer: ${TEST_BEARER_TOKEN}

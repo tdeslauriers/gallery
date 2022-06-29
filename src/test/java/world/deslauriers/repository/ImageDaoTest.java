@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 @MicronautTest
 public class ImageDaoTest {
 
@@ -21,7 +23,7 @@ public class ImageDaoTest {
     void testImageDaoCrud() throws IOException, SQLException {
 
         var pics = imageRepository.findAll();
-        pics.forEach(image -> System.out.println(image));
+        assertTrue(pics.spliterator().getExactSizeIfKnown() > 0);
     }
 
 }

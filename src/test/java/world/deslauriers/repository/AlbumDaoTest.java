@@ -19,7 +19,7 @@ public class AlbumDaoTest {
 	public AlbumDaoTest(AlbumRepository albumDao) {
 		this.albumDao = albumDao;
 	}
-	
+
 	@Test
 	void testAlbumDaoCrud() {
 		
@@ -47,6 +47,7 @@ public class AlbumDaoTest {
 		assertTrue(deleted.isEmpty());
 
 		// test data, includes xrefs
-//		var xref = albumDao.findByAlbum("2018");
+		var xref = albumDao.findByAlbum("2019").get();
+		assertTrue(xref.albumImages().iterator().hasNext());
 	}
 }

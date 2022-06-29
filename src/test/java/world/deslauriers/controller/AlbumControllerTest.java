@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.dto.AlbumDto;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @MicronautTest
@@ -33,14 +32,14 @@ public class AlbumControllerTest {
                 .toBlocking()
                 .retrieve(req, Argument.of(Iterable.class, Album.class));
         assertNotNull(albums);
-        assertEquals(3, albums.spliterator().getExactSizeIfKnown());
+        assertTrue(albums.spliterator().getExactSizeIfKnown() > 0);
 
-        req = HttpRequest.GET("/albums/2018").header("Authorization", "Bearer " + token);
+        req = HttpRequest.GET("/albums/2021").header("Authorization", "Bearer " + token);
         var album = client
                 .toBlocking()
                 .retrieve(req, AlbumDto.class);
         assertNotNull(album);
-        assertEquals("2018", album.album());
-        assertEquals(1, album.images().size());
+        assertEquals("2021", album.album());
+        assertTrue(album.images().size() > 0);
     }
 }
