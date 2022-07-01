@@ -17,21 +17,26 @@ public class AlbumServiceTest {
     }
 
     private static final String ALBUM_2021 = "2021";
-    private static final String ALBUM_ART = "Art";
     private static final String ALBUM_WRONG = "WRONG";
 
     @Test
     void testAlbumServiceCrud(){
 
         // must return optional empty if album does not exist
-        var album = albumService.getByAlbum(ALBUM_WRONG);
+        var album = albumService.getThumbnailsByAlbum(ALBUM_WRONG);
         assertTrue(album.isEmpty());
 
         // values in test database
         // must return images from album
-        album = albumService.getByAlbum(ALBUM_2021);
+        album = albumService.getThumbnailsByAlbum(ALBUM_2021);
         assertTrue(album.isPresent());
-        assertTrue(album.get().images().size() >= 1);
+        assertTrue(album.get().thumbnails().size() > 0);
+        album.get().thumbnails().forEach(thumbnailDto -> {
+            assertNotNull(thumbnailDto.id());
+            assertNotNull(thumbnailDto.date());
+            assertNotNull(thumbnailDto.published());
+            assertNotNull(thumbnailDto.thumbnail());
+        });
 
     }
 }

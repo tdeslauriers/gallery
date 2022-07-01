@@ -5,12 +5,9 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Album;
-import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.service.dto.AlbumDto;
-import world.deslauriers.service.dto.ThumbnailDto;
 
-import java.util.HashSet;
 import java.util.Optional;
 
 @Singleton
@@ -35,12 +32,19 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Optional<AlbumDto> getByAlbum(String album) {
-
-
-
+    public Optional<AlbumDto> getAlbum(String album) {
         return Optional.empty();
     }
 
+    @Override
+    public Optional<AlbumDto> getThumbnailsByAlbum(String album) {
+
+        var thumbs = albumRepository.findThumbnailsByAlbum(album);
+        if (thumbs.size() <= 0){
+            return Optional.empty();
+        }
+
+        return Optional.of(new AlbumDto(album, thumbs));
+    }
 
 }

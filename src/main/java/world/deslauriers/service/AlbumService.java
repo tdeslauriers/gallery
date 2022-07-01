@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface AlbumService {
     Iterable<Album> getAll();
 
-    Optional<AlbumDto> getByAlbum(String album);
+    Optional<AlbumDto> getAlbum(String album);
+
+    Optional<AlbumDto> getThumbnailsByAlbum(String album);
 }

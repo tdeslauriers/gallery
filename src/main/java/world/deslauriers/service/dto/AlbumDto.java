@@ -8,7 +8,6 @@ import java.util.Set;
 
 @Introspected
 public record AlbumDto(
-        Long id,
         String album,
-        HashSet<ThumbnailDto> images
+        HashSet<ThumbnailDto> thumbnails
 ) {}

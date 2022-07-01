@@ -40,6 +40,6 @@ public class AlbumControllerTest {
                 .retrieve(req, AlbumDto.class);
         assertNotNull(album);
         assertEquals("2021", album.album());
-        assertTrue(album.images().size() > 0);
+        assertTrue(album.thumbnails().size() > 0);
     }
 }

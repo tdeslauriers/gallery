@@ -36,6 +36,6 @@ public class AlbumController {
     @Get("/{album}")
     public Optional<AlbumDto> getByAlbum(String album){
 
-        return albumService.getByAlbum(album);
+        return albumService.getThumbnailsByAlbum(album);
     }
 }
