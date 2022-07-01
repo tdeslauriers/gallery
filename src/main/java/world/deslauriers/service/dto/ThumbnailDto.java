@@ -1,6 +1,7 @@
 package world.deslauriers.service.dto;
 
 import io.micronaut.core.annotation.Introspected;
+import io.micronaut.core.annotation.Nullable;
 
 import java.time.LocalDate;
 
@@ -8,8 +9,8 @@ import java.time.LocalDate;
 public record ThumbnailDto(
         Long id,
         String filename,
-        String title,
-        String description,
+        @Nullable String title,
+        @Nullable String description,
         LocalDate date,
         Boolean published,
         byte[] thumbnail

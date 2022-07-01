@@ -37,14 +37,10 @@ public class AlbumServiceImpl implements AlbumService {
     @Override
     public Optional<AlbumDto> getByAlbum(String album) {
 
-        var selected = albumRepository.findByAlbum(album);
-        if (selected.isPresent()){
-            var thumbnails = new HashSet<ThumbnailDto>(selected.get().albumImages().size());
-            selected.get().albumImages().forEach(albumImage -> {
-                if (albumImage.image().published()) thumbnails.add(imageService.loadThumbnailDto(albumImage.image()));
-            });
-            return Optional.of(new AlbumDto(selected.get().id(), selected.get().album(), thumbnails));
-        }
+
+
         return Optional.empty();
     }
+
+
 }

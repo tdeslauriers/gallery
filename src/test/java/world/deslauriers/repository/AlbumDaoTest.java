@@ -22,13 +22,13 @@ public class AlbumDaoTest {
 
 	@Test
 	void testAlbumDaoCrud() {
-		
+
 		var judo = new Album("Judo");
-		
+
 		judo = albumDao.save(judo);
 		assertNotNull(judo.id());
 		assertEquals("Judo", judo.album());
-		
+
 		var find = albumDao.findById(judo.id()).get();
 		assertNotNull(find.id());
 		assertEquals("Judo", find.album());
@@ -41,13 +41,16 @@ public class AlbumDaoTest {
 		var albums = albumDao.findAll();
 		assertTrue(albums.iterator().hasNext());
 		albums.forEach(album -> System.out.println(album.toString()));
-		
+
 		albumDao.deleteById(find.id());
 		var deleted = albumDao.findById(find.id());
 		assertTrue(deleted.isEmpty());
 
-		// test data, includes xrefs
-		var xref = albumDao.findByAlbum("2019").get();
-		assertTrue(xref.albumImages().iterator().hasNext());
+		// test data, thumbnails xref'd from image db test
+		var a2022 = albumDao.findThumbnailsByAlbum("2022");
+		assertTrue(a2022.size() > 0);
+		a2022.forEach(thumbnailDto -> {
+			assertNotNull(thumbnailDto.thumbnail());
+		});
 	}
 }
