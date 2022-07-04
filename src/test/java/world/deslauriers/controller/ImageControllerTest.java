@@ -1,5 +1,6 @@
 package world.deslauriers.controller;
 
+import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.HttpResponseException;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;
@@ -30,6 +31,13 @@ public class ImageControllerTest {
                 .retrieve(req, Image.class);
         Assertions.assertNotNull(res.image());
 
+        // un-published
+       var fourZeroFour = HttpRequest.GET("/images/b3ea8216-0f42-4777-a505-bebca3c0edfb").header("Authorization", "Bearer " + token);
+        var thrown = Assertions.assertThrows(HttpResponseException.class, () -> {
+            client
+                    .toBlocking()
+                    .retrieve(fourZeroFour, Image.class);
+        });
     }
 
 
