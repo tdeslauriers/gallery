@@ -1,10 +1,10 @@
 package world.deslauriers.controller;
 
-import com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.HttpResponseException;
 import io.micronaut.context.annotation.Property;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.client.HttpClient;
 import io.micronaut.http.client.annotation.Client;
+import io.micronaut.http.client.exceptions.HttpClientResponseException;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Assertions;
@@ -33,11 +33,12 @@ public class ImageControllerTest {
 
         // un-published
        var fourZeroFour = HttpRequest.GET("/images/b3ea8216-0f42-4777-a505-bebca3c0edfb").header("Authorization", "Bearer " + token);
-        var thrown = Assertions.assertThrows(HttpResponseException.class, () -> {
+        var thrown = Assertions.assertThrows(HttpClientResponseException.class, () -> {
             client
                     .toBlocking()
                     .retrieve(fourZeroFour, Image.class);
         });
+        Assertions.assertEquals("Not Found", thrown.getMessage());
     }
 
 
