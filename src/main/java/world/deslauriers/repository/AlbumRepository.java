@@ -34,8 +34,11 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
             FROM album a 
                 LEFT JOIN album_image ai ON a.id = ai.album_id
                 LEFT JOIN image i ON ai.image_id = i.id
-            WHERE a.album = :album
-            ORDER BY i.date
+            WHERE 
+                    a.album = :album
+                AND
+                    i.published = true
+            ORDER BY i.date DESC
             """)
     HashSet<ThumbnailDto> findThumbnailsByAlbum(String album);
 }

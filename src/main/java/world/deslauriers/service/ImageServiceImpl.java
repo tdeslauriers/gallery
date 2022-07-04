@@ -4,7 +4,8 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.ImageRepository;
-import world.deslauriers.service.dto.ThumbnailDto;
+
+import java.util.Optional;
 
 @Singleton
 public class ImageServiceImpl implements ImageService {
@@ -17,15 +18,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ThumbnailDto loadThumbnailDto(Image pic){
-
-            return new ThumbnailDto(
-                    pic.id(),
-                    pic.filename(),
-                    pic.title(),
-                    pic.description(),
-                    pic.date(),
-                    pic.published(),
-                    pic.thumbnail());
+    public Optional<Image> getImageByFilename(String filename){
+        return imageRepository.findByFilenameAndPublishedTrue(filename);
     }
 }
