@@ -32,7 +32,7 @@ public class ImageControllerTest {
         Assertions.assertNotNull(res.image());
 
         // un-published
-       var fourZeroFour = HttpRequest.GET("/images/b3ea8216-0f42-4777-a505-bebca3c0edfb").header("Authorization", "Bearer " + token);
+        var fourZeroFour = HttpRequest.GET("/images/b3ea8216-0f42-4777-a505-bebca3c0edfb").header("Authorization", "Bearer " + token);
         var thrown = Assertions.assertThrows(HttpClientResponseException.class, () -> {
             client
                     .toBlocking()

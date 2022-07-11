@@ -1,5 +1,6 @@
 package world.deslauriers.repository;
 
+import io.micronaut.data.annotation.Query;
 import io.micronaut.data.annotation.Repository;
 import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
@@ -13,4 +14,13 @@ import java.util.Optional;
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
     Optional<Image> findByFilenameAndPublishedTrue(String filename);
+
+    @Query(value = """
+            UPDATE image i SET
+                i.title = :title,
+                i.description = :description,
+                i.published = :published
+            WHERE i.id = :id
+            """)
+    void updateImage(Long id, String title, String description, Boolean published);
 }
