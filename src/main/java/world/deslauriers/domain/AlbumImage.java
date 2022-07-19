@@ -16,12 +16,12 @@ public record AlbumImage(
     @Id @GeneratedValue Long id,
 
     @Nullable
-    @JsonIgnore
     @Relation(Relation.Kind.MANY_TO_ONE)
     @JoinTable(name = "album")
     Album album,
 
     @Nullable
+    @JsonIgnore
     @Relation(Relation.Kind.MANY_TO_ONE)
     @JoinTable(name = "image")
     Image image

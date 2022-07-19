@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.ImageUpdateDto;
+import world.deslauriers.service.dto.ThumbnailDto;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -24,8 +25,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
+    public Iterable<ThumbnailDto> getAllUnpublished(){
+
+        return imageRepository.findAllUnpublished();
+    }
+
+    @Override
     public Optional<Image> getImageByFilename(String filename){
-        return imageRepository.findByFilenameAndPublishedTrue(filename);
+        return imageRepository.findByFilename(filename);
     }
 
     @Override

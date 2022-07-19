@@ -45,6 +45,10 @@ public class ImageServiceTest {
         assertNotNull(updated.id());
         assertEquals(published.get().id(), updated.id());
         assertEquals("updated title", updated.title());
+
+        // all unpublished
+        var allUnpublished = imageService.getAllUnpublished();
+        assertTrue(allUnpublished.spliterator().getExactSizeIfKnown() > 0);
     }
 
 }

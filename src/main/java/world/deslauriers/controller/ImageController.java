@@ -12,6 +12,7 @@ import jakarta.inject.Inject;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.ImageService;
 import world.deslauriers.service.dto.ImageUpdateDto;
+import world.deslauriers.service.dto.ThumbnailDto;
 
 import java.sql.SQLException;
 import java.util.Optional;
@@ -33,6 +34,13 @@ public class ImageController {
     public Optional<Image> getImage(String filename){
 
         return imageService.getImageByFilename(filename);
+    }
+
+    @Secured({"GALLERY_EDIT"})
+    @Get("/unpublished")
+    public Iterable<ThumbnailDto> getAllUnpublished(){
+
+        return imageService.getAllUnpublished();
     }
 
     @Secured({"GALLERY_EDIT"})
