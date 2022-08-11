@@ -25,7 +25,9 @@ public class ImageControllerTest {
     void testImageCrud(){
 
         // test data
-        var req = HttpRequest.GET("/images/c1abcf96-9626-45aa-a606-5e3ca0c26110").header("Authorization", "Bearer " + token);
+        var req = HttpRequest
+                .GET("/images/c1abcf96-9626-45aa-a606-5e3ca0c26110")
+                .header("Authorization", "Bearer " + token);
         var res = client
                 .toBlocking()
                 .retrieve(req, Image.class);
