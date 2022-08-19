@@ -5,10 +5,10 @@ micronaut:
     port: 8081
     cors:
       enabled: true
-      configurations:
-        web:
-          allowedOrigins:
-            - ${CORS_URLS}
+#      configurations:
+#        web:
+#          allowedOrigins:
+#            - ${CORS_URLS}
   security:
     token:
       jwt:

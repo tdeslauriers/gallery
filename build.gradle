@@ -23,10 +23,10 @@ micronaut {
 }
 
 dependencies {
-    annotationProcessor("io.dekorate:kubernetes-annotations")
+    annotationProcessor("io.dekorate:kubernetes-annotations:2.11.1")
 	annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut:micronaut-validation")
-    implementation("io.dekorate:kubernetes-annotations")
+    implementation("io.dekorate:kubernetes-annotations:2.11.1")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-inject")
     implementation("io.micronaut:micronaut-runtime")
@@ -36,6 +36,7 @@ dependencies {
     implementation("io.micronaut.data:micronaut-data-jdbc")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.flyway:micronaut-flyway")
+    runtimeOnly("org.flywaydb:flyway-mysql")
     runtimeOnly ("mysql:mysql-connector-java")
 
     // security

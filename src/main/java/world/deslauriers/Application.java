@@ -6,20 +6,18 @@ import io.micronaut.runtime.Micronaut;
 
 @KubernetesApplication(
         name = "gallery",
-        serviceType = ServiceType.NodePort,
-        expose = true,
-        host = "localhost",
+        serviceType = ServiceType.ClusterIP,
         replicas = 3,
         imagePullPolicy = ImagePullPolicy.Always,
         labels = @Label(key = "app", value = "gallery"),
-        ports = @Port(name = "http", containerPort = 8081),
+        ports = @Port(name = "http", hostPort = 8080, containerPort = 8081),
         envVars = {
             @Env(name = "GALLERY_JDBC_URL", configmap = "gallery-svc-config", value = "jdbc_url"),
             @Env(name = "GALLERY_JDBC_USER", configmap = "gallery-svc-config", value = "jdbc_username"),
             @Env(name = "GALLERY_JDBC_DRIVER", configmap = "gallery-svc-config", value = "jdbc_driver"),
             @Env(name = "GALLERY_JDBC_DIALECT", configmap = "gallery-svc-config", value = "jdbc_dialect"),
             @Env(name = "CORS_URLS", configmap = "gallery-svc-config", value = "cors_urls"),
-            @Env(name = "GALLERY_JDBC_PASSWORD", secret = "gallery-mariadb-galera", value = "mariadb-password"),
+            @Env(name = "GALLERY_JDBC_PASSWORD", secret = "gallery-mariadb", value = "mariadb-password"),
             @Env(name = "JWT_GENERATOR_SIGNATURE_SECRET", secret = "jwt", value = "signature-pw"),
         }
 )
