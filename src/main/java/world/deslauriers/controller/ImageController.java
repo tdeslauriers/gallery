@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
-@Controller("/gallery/api/images")
+@Controller("/images")
 public class ImageController {
 
     @Inject
