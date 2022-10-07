@@ -38,7 +38,7 @@ public class AlbumDaoTest {
 		find = albumDao.update(update);
 		assertEquals("Soccer", find.album());
 
-		var albums = albumDao.findAll();
+		var albums = albumDao.findAllOrderByAlbumDesc();
 		assertTrue(albums.iterator().hasNext());
 		albums.forEach(album -> System.out.println(album.toString()));
 

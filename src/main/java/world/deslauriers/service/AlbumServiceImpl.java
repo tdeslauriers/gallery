@@ -18,17 +18,13 @@ public class AlbumServiceImpl implements AlbumService {
     @Inject
     private final AlbumRepository albumRepository;
 
-    @Inject
-    private final ImageService imageService;
-
-    public AlbumServiceImpl(AlbumRepository albumRepository, ImageService imageService) {
+    public AlbumServiceImpl(AlbumRepository albumRepository) {
         this.albumRepository = albumRepository;
-        this.imageService = imageService;
     }
 
     @Override
     public Iterable<Album> getAll(){
-        return albumRepository.findAll();
+        return albumRepository.findAllOrderByAlbumDesc();
     }
 
     @Override

@@ -33,6 +33,7 @@ public class AlbumControllerTest {
                 .retrieve(req, Argument.of(Iterable.class, Album.class));
         assertNotNull(albums);
         assertTrue(albums.spliterator().getExactSizeIfKnown() > 0);
+        albums.forEach(o -> System.out.println(o));
 
         req = HttpRequest.GET("/albums/2021").header("Authorization", "Bearer " + token);
         var album = client

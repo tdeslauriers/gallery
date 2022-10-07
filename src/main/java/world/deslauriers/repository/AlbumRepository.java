@@ -16,7 +16,7 @@ import java.util.Optional;
 public interface AlbumRepository extends CrudRepository<Album, Long> {
 
     // for menu (no join data)
-    Iterable<Album> findAll();
+    Iterable<Album> findAllOrderByAlbumDesc();
 
     Optional<Album> findByAlbum(String album);
 

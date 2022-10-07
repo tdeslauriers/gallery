@@ -38,6 +38,6 @@ public class AlbumServiceTest {
             assertNotNull(thumbnailDto.thumbnail());
         });
 
-
+        albumService.getAll().forEach(album1 -> System.out.println(album1.album()));
     }
 }
