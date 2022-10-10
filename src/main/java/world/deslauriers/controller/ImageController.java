@@ -1,9 +1,8 @@
 package world.deslauriers.controller;
 
 import io.micronaut.http.HttpResponse;
-import io.micronaut.http.annotation.Controller;
-import io.micronaut.http.annotation.Get;
-import io.micronaut.http.annotation.Put;
+import io.micronaut.http.HttpStatus;
+import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
@@ -54,5 +53,17 @@ public class ImageController {
             throw new RuntimeException(e);
         }
         return HttpResponse.ok().body(updated);
+    }
+
+    @Secured({"GALLERY_EDIT"})
+    @Delete("/{filename}")
+    @Status(HttpStatus.NO_CONTENT)
+    public void delete(String filename){
+
+        try {
+            imageService.deleteImage(filename);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

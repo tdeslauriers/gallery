@@ -15,4 +15,5 @@ public interface ImageService {
     Image updateImage(ImageUpdateDto img) throws SQLException;
 
 
+    void deleteImage(String filename) throws SQLException;
 }

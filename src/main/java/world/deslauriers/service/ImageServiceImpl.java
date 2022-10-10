@@ -5,6 +5,7 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Image;
+import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
@@ -20,8 +21,12 @@ public class ImageServiceImpl implements ImageService {
     @Inject
     private final ImageRepository imageRepository;
 
-    public ImageServiceImpl(ImageRepository imageRepository) {
+    @Inject
+    private final AlbumImageRepository albumImageRepository;
+
+    public ImageServiceImpl(ImageRepository imageRepository, AlbumImageRepository albumImageRepository) {
         this.imageRepository = imageRepository;
+        this.albumImageRepository = albumImageRepository;
     }
 
     @Override
@@ -44,7 +49,21 @@ public class ImageServiceImpl implements ImageService {
             throw new SQLException("Record not found.");
        }
 
-        imageRepository.updateImage(img.id(), img.title(), img.description(), img.published());
-        return imageRepository.findById(img.id()).orElse(null);
+       imageRepository.updateImage(img.id(), img.title(), img.description(), img.published());
+       return imageRepository.findById(img.id()).orElse(null);
+    }
+
+    @Override
+    public void deleteImage(String filename) throws SQLException{
+
+        var deleted = imageRepository.findByFilename(filename);
+        if (deleted.isEmpty()){
+            log.error("Attempt to delete a record that does not exist.");
+            throw new SQLException("Record not found");
+        }
+
+        // remove xrefs before deletion
+        deleted.get().albumImages().forEach(albumImageRepository::delete);
+        imageRepository.delete(deleted.get());
     }
 }

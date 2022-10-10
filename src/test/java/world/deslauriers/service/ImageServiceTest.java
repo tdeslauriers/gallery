@@ -34,6 +34,7 @@ public class ImageServiceTest {
         assertTrue(published.isPresent());
 
         var unpublished = imageService.getImageByFilename("b3ea8216-0f42-4777-a505-bebca3c0edfb");
+        System.out.println(unpublished.get());
         assertTrue(unpublished.isEmpty());
 
 
@@ -49,6 +50,11 @@ public class ImageServiceTest {
         // all unpublished
         var allUnpublished = imageService.getAllUnpublished();
         assertTrue(allUnpublished.spliterator().getExactSizeIfKnown() > 0);
+
+        imageService.deleteImage(published.get().filename());
+        var deleted = imageService.getImageByFilename(published.get().filename());
+        System.out.println(deleted);
+        assertTrue(deleted.isEmpty());
     }
 
 }
