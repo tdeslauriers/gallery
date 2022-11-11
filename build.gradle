@@ -26,6 +26,7 @@ dependencies {
     annotationProcessor("io.dekorate:kubernetes-annotations:2.11.1")
 	annotationProcessor("io.micronaut:micronaut-inject-java")
     annotationProcessor("io.micronaut:micronaut-validation")
+
     implementation("io.dekorate:kubernetes-annotations:2.11.1")
     implementation("io.micronaut:micronaut-validation")
     implementation("io.micronaut:micronaut-inject")
@@ -54,7 +55,6 @@ dependencies {
 
 }
 
-
 application {
     mainClass.set("world.deslauriers.Application")
 }
@@ -63,7 +63,6 @@ java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
 }
-
 
 test {
     testLogging{
