@@ -31,8 +31,12 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Iterable<ThumbnailDto> getAllUnpublished(){
-
         return imageRepository.findAllUnpublished();
+    }
+
+    @Override
+    public Iterable<Image> backupAll(){
+        return imageRepository.findAll();
     }
 
     @Override

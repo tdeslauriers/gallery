@@ -12,6 +12,7 @@ import world.deslauriers.service.AlbumService;
 import world.deslauriers.service.dto.AlbumDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
+import javax.validation.constraints.Size;
 import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -35,7 +36,7 @@ public class AlbumController {
 
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/{album}")
-    public Optional<AlbumDto> getByAlbum(String album){
+    public Optional<AlbumDto> getByAlbum(@Size(min = 2, max = 32) String album){
 
         return albumService.getThumbnailsByAlbum(album);
     }

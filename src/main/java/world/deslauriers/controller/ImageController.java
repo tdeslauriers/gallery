@@ -13,6 +13,7 @@ import world.deslauriers.service.ImageService;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
+import javax.validation.constraints.Size;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -31,20 +32,18 @@ public class ImageController {
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/{filename}")
     public Optional<Image> getImage(String filename){
-
         return imageService.getImageByFilename(filename);
     }
 
     @Secured({"GALLERY_EDIT"})
     @Get("/unpublished")
     public Iterable<ThumbnailDto> getAllUnpublished(){
-
         return imageService.getAllUnpublished();
     }
 
     @Secured({"GALLERY_EDIT"})
     @Put
-    public HttpResponse update(ImageUpdateDto img){
+    public HttpResponse update(@Body ImageUpdateDto img){
 
         Image updated = null;
         try {
@@ -58,7 +57,7 @@ public class ImageController {
     @Secured({"GALLERY_EDIT"})
     @Delete("/{filename}")
     @Status(HttpStatus.NO_CONTENT)
-    public void delete(String filename){
+    public void delete(@Size(min = 2, max = 64) String filename){
 
         try {
             imageService.deleteImage(filename);

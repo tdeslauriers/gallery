@@ -42,5 +42,7 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
             """)
     Iterable<ThumbnailDto> findAllUnpublished();
 
-
+    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
+    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
+    Iterable<Image> findAll();
 }
