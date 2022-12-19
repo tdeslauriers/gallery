@@ -6,10 +6,16 @@ import io.micronaut.data.model.query.builder.sql.Dialect;
 import io.micronaut.data.repository.PageableRepository;
 import world.deslauriers.domain.AlbumImage;
 
+import java.util.Set;
+
 @JdbcRepository(dialect = Dialect.MYSQL)
 public interface AlbumImageRepository extends PageableRepository<AlbumImage, Long> {
 
     @Join(value = "album", type = Join.Type.LEFT_FETCH)
     @Join(value = "image", type = Join.Type.LEFT_FETCH)
     Iterable<AlbumImage> findAll();
+
+    @Join(value = "album", type = Join.Type.LEFT_FETCH)
+    @Join(value = "image", type = Join.Type.LEFT_FETCH)
+    Set<AlbumImage> findByImageId(Long id);
 }

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.repository.ImageRepository;
+import world.deslauriers.repository.dto.ImageDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
@@ -41,7 +42,24 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Optional<Image> getImageByFilename(String filename){
-        return imageRepository.findByFilename(filename);
+        var dto = imageRepository.findByFilename(filename);
+        var image = new Image();
+        if (dto.isPresent()){
+            image.setId(dto.get().id());
+            image.setFilename(dto.get().filename());
+            image.setTitle(dto.get().title());
+            image.setDescription(dto.get().description());
+            image.setDate(dto.get().date());
+            image.setPublished(dto.get().published());
+            image.setThumbnail(dto.get().thumbnail());
+            image.setPresentation(dto.get().presentation());
+
+            var ai = albumImageRepository.findByImageId(dto.get().id());
+            if (ai.spliterator().getExactSizeIfKnown() > 0){
+                image.setAlbumImages(ai);
+            }
+        }
+        return Optional.of(image);
     }
 
     @Override
@@ -57,17 +75,17 @@ public class ImageServiceImpl implements ImageService {
        return imageRepository.findById(img.id()).orElse(null);
     }
 
-    @Override
-    public void deleteImage(String filename) throws SQLException{
-
-        var deleted = imageRepository.findByFilename(filename);
-        if (deleted.isEmpty()){
-            log.error("Attempt to delete a record that does not exist.");
-            throw new SQLException("Record not found");
-        }
-
-        // remove xrefs before deletion
-        deleted.get().albumImages().forEach(albumImageRepository::delete);
-        imageRepository.delete(deleted.get());
-    }
+//    @Override
+//    public void deleteImage(String filename) throws SQLException{
+//
+//        var deleted = imageRepository.findByFilename(filename);
+//        if (deleted.isEmpty()){
+//            log.error("Attempt to delete a record that does not exist.");
+//            throw new SQLException("Record not found");
+//        }
+//
+//        // remove xrefs before deletion
+//        deleted.get().albumImages().forEach(albumImageRepository::delete);
+//        imageRepository.delete(deleted.get());
+//    }
 }

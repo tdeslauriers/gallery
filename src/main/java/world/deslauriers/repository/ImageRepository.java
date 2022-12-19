@@ -7,6 +7,7 @@ import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
 import io.micronaut.data.repository.CrudRepository;
 import world.deslauriers.domain.Image;
+import world.deslauriers.repository.dto.ImageDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
 import java.util.Optional;
@@ -15,9 +16,22 @@ import java.util.Optional;
 @JdbcRepository(dialect = Dialect.MYSQL)
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
-    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
-    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
-    Optional<Image> findByFilename(String filename);
+//    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
+//    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
+    @Query("""
+            SELECT
+                i.id,
+                i.filename,
+                i.title,
+                i.description,
+                i.date,
+                i.published,
+                i.thumbnail,
+                i.presentation
+            FROM image i
+            WHERE i.filename = :filename
+            """)
+    Optional<ImageDto> findByFilename(String filename);
 
     @Query(value = """
             UPDATE image i SET
