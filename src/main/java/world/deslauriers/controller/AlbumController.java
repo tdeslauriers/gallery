@@ -10,7 +10,6 @@ import jakarta.inject.Inject;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.AlbumService;
 import world.deslauriers.service.dto.AlbumDto;
-import world.deslauriers.service.dto.ThumbnailDto;
 
 import javax.validation.constraints.Size;
 import java.util.Optional;

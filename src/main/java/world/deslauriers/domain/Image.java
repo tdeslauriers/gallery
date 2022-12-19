@@ -26,6 +26,8 @@ public record Image(
 
 	byte[] thumbnail,
 
+	byte[] presentation,
+
 	byte[] image,
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
@@ -33,13 +35,11 @@ public record Image(
 	Set<AlbumImage> albumImages
 
 ){
-	public Image(String filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, byte[] thumbnail, byte[] image) {
-		this(null, filename, title, description, date, published, thumbnail, image, null);
+	public Image(String filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, byte[] thumbnail, byte[] presentation, byte[] image) {
+		this(null, filename, title, description, date, published, thumbnail, presentation, image, null);
 	}
 
 	public Image(Long id, @Nullable String title, @Nullable String description, @NonNull Boolean published) {
-		this(id, null, title, description, null, published, new byte[0], new byte[0], null);
+		this(id, null, title, description, null, published, new byte[0], new byte[0], new byte[0], null);
 	}
-
-
 }
