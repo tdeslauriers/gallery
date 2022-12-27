@@ -36,8 +36,8 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Iterable<Image> backupAll(){
-        return imageRepository.findAll();
+    public Iterable<Long> listImageIds(){
+        return imageRepository.findAllImageIds();
     }
 
     @Override

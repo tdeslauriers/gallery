@@ -32,6 +32,10 @@ datasources:
     username: ${GALLERY_JDBC_USER}
     password: ${GALLERY_JDBC_PASSWORD}
     sql-dialect: ${GALLERY_JDBC_DIALECT}
+#    url: ${BACKUP_GALLERY_JDBC_URL} # for building backup tables
+#    username: ${BACKUP_GALLERY_JDBC_USER}
+#    password: ${BACKUP_GALLERY_JDBC_PASSWORD}
+
 ---
 flyway:
   datasources:

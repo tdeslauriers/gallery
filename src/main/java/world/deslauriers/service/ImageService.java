@@ -18,5 +18,5 @@ public interface ImageService {
 
 //    void deleteImage(String filename) throws SQLException;
 
-    Iterable<Image> backupAll();
+    Iterable<Long> listImageIds();
 }

@@ -27,9 +27,9 @@ public class BackupController {
     }
 
     @Secured({"COLD_STORAGE"})
-    @Get
-    public Iterable<Image> backup(){
+    @Get("/list")
+    public Iterable<Long> listImageIds(){
 
-        return imageService.backupAll();
+        return imageService.listImageIds();
     }
 }

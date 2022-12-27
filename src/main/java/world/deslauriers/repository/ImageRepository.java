@@ -59,4 +59,10 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
     @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
     @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
     Iterable<Image> findAll();
+
+    @Query(value = """
+            SELECT 
+                i.id
+            FROM image i""")
+    Iterable<Long> findAllImageIds();
 }
