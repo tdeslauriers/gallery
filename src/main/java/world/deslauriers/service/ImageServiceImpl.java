@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.repository.ImageRepository;
-import world.deslauriers.repository.dto.ImageDto;
+import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
@@ -59,6 +59,7 @@ public class ImageServiceImpl implements ImageService {
                 image.setAlbumImages(ai);
             }
         }
+
         return Optional.of(image);
     }
 
@@ -73,6 +74,11 @@ public class ImageServiceImpl implements ImageService {
 
        imageRepository.updateImage(img.id(), img.title(), img.description(), img.published());
        return imageRepository.findById(img.id()).orElse(null);
+    }
+
+    @Override
+    public Optional<FullResolutionDto> getFullResolution(String filename){
+        return imageRepository.findFullResolutionByFilename(filename);
     }
 
 //    @Override

@@ -8,6 +8,7 @@ import io.micronaut.data.model.query.builder.sql.Dialect;
 import io.micronaut.data.repository.CrudRepository;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.dto.ImageDto;
+import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
 import java.util.Optional;
@@ -61,8 +62,17 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
     Iterable<Image> findAll();
 
     @Query(value = """
-            SELECT 
+            SELECT
                 i.id
             FROM image i""")
     Iterable<Long> findAllImageIds();
+
+    @Query("""
+            SELECT
+                i.filename,
+                i.image
+            FROM image i
+            WHERE i.filename = :filename
+            """)
+    Optional<FullResolutionDto> findFullResolutionByFilename(String filename);
 }

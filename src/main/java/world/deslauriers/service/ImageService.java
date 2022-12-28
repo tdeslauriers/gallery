@@ -1,7 +1,7 @@
 package world.deslauriers.service;
 
 import world.deslauriers.domain.Image;
-import world.deslauriers.repository.dto.ImageDto;
+import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
@@ -15,8 +15,9 @@ public interface ImageService {
 
     Image updateImage(ImageUpdateDto img) throws SQLException;
 
-
 //    void deleteImage(String filename) throws SQLException;
 
     Iterable<Long> listImageIds();
+
+    Optional<FullResolutionDto> getFullResolution(String filename);
 }

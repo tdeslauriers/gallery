@@ -10,6 +10,7 @@ import jakarta.inject.Inject;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.ImageService;
 import world.deslauriers.repository.dto.ImageDto;
+import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
@@ -28,10 +29,16 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @Secured({"GALLERY_READ", "GALLERY_EDIT"})
+    @Secured({"GALLERY_READ", "GALLERY_EDIT", "COLD_STORAGE"})
     @Get("/{filename}")
     public Optional<Image> getImage(String filename){
         return imageService.getImageByFilename(filename);
+    }
+
+    @Secured({"GALLERY_READ", "GALLERY_EDIT", "COLD_STORAGE"})
+    @Get("/fullresolution/{filename}")
+    public Optional<FullResolutionDto> getFullResoltuion(String filename){
+        return imageService.getFullResolution(filename);
     }
 
     @Secured({"GALLERY_EDIT"})
