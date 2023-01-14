@@ -35,7 +35,7 @@ public class ImageController {
         return imageService.getImageByFilename(filename);
     }
 
-    @Secured({"GALLERY_READ", "GALLERY_EDIT", "COLD_STORAGE"})
+    @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/fullresolution/{filename}")
     public Optional<FullResolutionDto> getFullResoltuion(String filename){
         return imageService.getFullResolution(filename);

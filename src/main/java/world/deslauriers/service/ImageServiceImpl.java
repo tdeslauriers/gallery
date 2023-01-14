@@ -81,6 +81,11 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findFullResolutionByFilename(filename);
     }
 
+    @Override
+    public Optional<Image> getImageById(Long id) {
+        return imageRepository.findById(id);
+    }
+
 //    @Override
 //    public void deleteImage(String filename) throws SQLException{
 //

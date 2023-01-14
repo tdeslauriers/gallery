@@ -1,8 +1,8 @@
 package world.deslauriers.service.dto;
 
-import io.micronaut.core.annotation.Introspected;
+import io.micronaut.serde.annotation.Serdeable;
 
-@Introspected
+@Serdeable
 public record FullResolutionDto(
         String filename,
         byte[] image

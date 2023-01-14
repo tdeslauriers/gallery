@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.ImageService;
 
+import java.util.Optional;
+
 @Secured(SecurityRule.IS_AUTHENTICATED)
 @ExecuteOn(TaskExecutors.IO)
 @Controller("/backup")
@@ -30,6 +32,12 @@ public class BackupController {
     @Get("/list")
     Iterable<Long> listImageIds(){
         return imageService.listImageIds();
+    }
+
+    @Secured({"COLD_STORAGE"})
+    @Get("/{id}")
+    public Optional<Image> getImage(Long id){
+        return imageService.getImageById(id);
     }
 
 }

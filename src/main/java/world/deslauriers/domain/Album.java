@@ -1,16 +1,16 @@
 package world.deslauriers.domain;
 
-import io.micronaut.core.annotation.Introspected;
 import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
 import io.micronaut.data.jdbc.annotation.JoinTable;
+import io.micronaut.serde.annotation.Serdeable;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Introspected
+@Serdeable
 @MappedEntity
 public record Album(
 

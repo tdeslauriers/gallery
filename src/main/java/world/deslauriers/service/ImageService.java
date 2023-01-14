@@ -20,4 +20,6 @@ public interface ImageService {
     Iterable<Long> listImageIds();
 
     Optional<FullResolutionDto> getFullResolution(String filename);
+
+    Optional<Image> getImageById(Long id);
 }

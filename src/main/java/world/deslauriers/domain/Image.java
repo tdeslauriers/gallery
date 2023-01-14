@@ -1,7 +1,6 @@
 package world.deslauriers.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.micronaut.core.annotation.Introspected;
 import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.data.annotation.GeneratedValue;
@@ -9,11 +8,12 @@ import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
 import io.micronaut.data.jdbc.annotation.JoinTable;
+import io.micronaut.serde.annotation.Serdeable;
 
 import java.time.LocalDate;
 import java.util.Set;
 
-@Introspected
+@Serdeable
 @MappedEntity
 public class Image{
 

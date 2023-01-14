@@ -17,8 +17,10 @@ import java.util.Optional;
 @JdbcRepository(dialect = Dialect.MYSQL)
 public interface ImageRepository extends CrudRepository<Image, Long> {
 
-//    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
-//    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
+    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
+    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
+    Optional<Image> findById(Long id);
+
     @Query("""
             SELECT
                 i.id,
@@ -63,9 +65,9 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
 
     @Query(value = """
             SELECT
-                i.id
+                i.filename
             FROM image i""")
-    Iterable<Long> findAllImageIds();
+    Iterable<String> findAllImageFilenames();
 
     @Query("""
             SELECT
@@ -75,4 +77,11 @@ public interface ImageRepository extends CrudRepository<Image, Long> {
             WHERE i.filename = :filename
             """)
     Optional<FullResolutionDto> findFullResolutionByFilename(String filename);
+
+    @Query("""
+            SELECT
+                i.id
+            FROM image i
+            """)
+    Iterable<Long> findAllImageIds();
 }
