@@ -8,6 +8,7 @@ import io.micronaut.data.repository.CrudRepository;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.dto.ThumbnailDto;
 
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
 
@@ -38,5 +39,5 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
                     i.published = true
             ORDER BY i.date DESC
             """)
-    LinkedHashSet<ThumbnailDto> findThumbnailsByAlbum(String album);
+    HashSet<ThumbnailDto> findThumbnailsByAlbum(String album);
 }

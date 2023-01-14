@@ -27,10 +27,6 @@ public class AlbumServiceImpl implements AlbumService {
         return albumRepository.findAllOrderByAlbumDesc();
     }
 
-    @Override
-    public Optional<AlbumDto> getAlbum(String album) {
-        return Optional.empty();
-    }
 
     @Override
     public Optional<AlbumDto> getThumbnailsByAlbum(String album) {
