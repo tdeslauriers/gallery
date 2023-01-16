@@ -13,7 +13,7 @@ public interface ImageService {
 
     Optional<Image> getImageByFilename(String filename);
 
-    Image updateImage(ImageUpdateDto img) throws SQLException;
+    void updateImage(ImageUpdateDto img) throws SQLException;
 
 //    void deleteImage(String filename) throws SQLException;
 

@@ -49,15 +49,14 @@ public class ImageController {
 
     @Secured({"GALLERY_EDIT"})
     @Put
-    public HttpResponse update(@Body ImageUpdateDto img){
+    public HttpResponse update(@Body ImageUpdateDto cmd){
 
-        Image updated = null;
         try {
-            updated = imageService.updateImage(img);
+            imageService.updateImage(cmd);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return HttpResponse.ok().body(updated);
+        return HttpResponse.noContent();
     }
 
 //    @Secured({"GALLERY_EDIT"})

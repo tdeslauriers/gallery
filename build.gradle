@@ -1,4 +1,5 @@
 plugins {
+    id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.micronaut.application") version "$micronautPluginVersion"
 }
 
@@ -41,7 +42,7 @@ dependencies {
 
     // database
     implementation("io.micronaut.data:micronaut-data-jdbc")
-    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    runtimeOnly("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.flyway:micronaut-flyway")
     runtimeOnly("org.flywaydb:flyway-mysql")
     runtimeOnly ("mysql:mysql-connector-java")

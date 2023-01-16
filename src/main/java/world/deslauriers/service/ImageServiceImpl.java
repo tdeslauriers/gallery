@@ -64,16 +64,14 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Image updateImage(ImageUpdateDto img) throws SQLException {
+    public void updateImage(ImageUpdateDto img) throws SQLException {
 
        if (imageRepository.findById(img.id()).isEmpty()){
 
            log.error("Attempt to update record that does not exist.");
             throw new SQLException("Record not found.");
        }
-
        imageRepository.updateImage(img.id(), img.title(), img.description(), img.published());
-       return imageRepository.findById(img.id()).orElse(null);
     }
 
     @Override
