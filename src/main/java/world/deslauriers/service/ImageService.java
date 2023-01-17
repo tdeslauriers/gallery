@@ -15,7 +15,7 @@ public interface ImageService {
 
     void updateImage(ImageUpdateDto img) throws SQLException;
 
-//    void deleteImage(String filename) throws SQLException;
+    void deleteImage(String filename) throws SQLException;
 
     Iterable<Long> listImageIds();
 

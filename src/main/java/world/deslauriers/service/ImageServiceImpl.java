@@ -84,17 +84,17 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findById(id);
     }
 
-//    @Override
-//    public void deleteImage(String filename) throws SQLException{
-//
-//        var deleted = imageRepository.findByFilename(filename);
-//        if (deleted.isEmpty()){
-//            log.error("Attempt to delete a record that does not exist.");
-//            throw new SQLException("Record not found");
-//        }
-//
-//        // remove xrefs before deletion
-//        deleted.get().albumImages().forEach(albumImageRepository::delete);
-//        imageRepository.delete(deleted.get());
-//    }
+    @Override
+    public void deleteImage(String filename) throws SQLException{
+
+        var deleted = getImageByFilename(filename);
+        if (deleted.isEmpty()){
+            log.error("Attempt to delete a record that does not exist.");
+            throw new SQLException("Record not found");
+        }
+
+        // remove xrefs before deletion
+        deleted.get().getAlbumImages().forEach(albumImageRepository::delete);
+        imageRepository.delete(deleted.get());
+    }
 }

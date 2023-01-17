@@ -1,6 +1,7 @@
 package world.deslauriers.controller;
 
 import io.micronaut.http.HttpResponse;
+import io.micronaut.http.HttpStatus;
 import io.micronaut.http.annotation.*;
 import io.micronaut.scheduling.TaskExecutors;
 import io.micronaut.scheduling.annotation.ExecuteOn;
@@ -14,6 +15,7 @@ import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
+import javax.validation.constraints.Size;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -59,15 +61,15 @@ public class ImageController {
         return HttpResponse.noContent();
     }
 
-//    @Secured({"GALLERY_EDIT"})
-//    @Delete("/{filename}")
-//    @Status(HttpStatus.NO_CONTENT)
-//    public void delete(@Size(min = 2, max = 64) String filename){
-//
-//        try {
-//            imageService.deleteImage(filename);
-//        } catch (SQLException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    @Secured({"GALLERY_EDIT"})
+    @Delete("/{filename}")
+    @Status(HttpStatus.NO_CONTENT)
+    public void delete(@Size(min = 2, max = 64) String filename){
+
+        try {
+            imageService.deleteImage(filename);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
