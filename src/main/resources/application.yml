@@ -8,7 +8,8 @@ micronaut:
 #      configurations:
 #        web:
 #          allowedOrigins:
-#            - ${CORS_URLS}
+#            - ${CORS_URL_GATEWAY}
+#            - ${CORS_URL_WORLD}
   security:
     token:
       jwt:
@@ -33,6 +34,8 @@ datasources:
     password: ${GALLERY_JDBC_PASSWORD}
     sql-dialect: ${GALLERY_JDBC_DIALECT}
     driverClassName: com.mysql.cj.jdbc.Driver
+    maximum-pool-size: 20
+    max-lifetime: 10
 #    url: ${BACKUP_GALLERY_JDBC_URL} # for building backup tables
 #    username: ${BACKUP_GALLERY_JDBC_USER}
 #    password: ${BACKUP_GALLERY_JDBC_PASSWORD}
