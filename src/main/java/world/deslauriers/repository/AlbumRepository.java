@@ -1,25 +1,22 @@
 package world.deslauriers.repository;
 
 import io.micronaut.data.annotation.Query;
-import io.micronaut.data.annotation.Repository;
-import io.micronaut.data.jdbc.annotation.JdbcRepository;
 import io.micronaut.data.model.query.builder.sql.Dialect;
-import io.micronaut.data.repository.CrudRepository;
+import io.micronaut.data.r2dbc.annotation.R2dbcRepository;
+import io.micronaut.data.repository.reactive.ReactorCrudRepository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.dto.ThumbnailDto;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Optional;
 
-@Repository
-@JdbcRepository(dialect = Dialect.MYSQL)
-public interface AlbumRepository extends CrudRepository<Album, Long> {
+@R2dbcRepository(dialect = Dialect.MYSQL)
+public interface AlbumRepository extends ReactorCrudRepository<Album, Long> {
 
     // for menu (no join data)
-    Iterable<Album> findAllOrderByAlbumDesc();
+    Flux<Album> findAllOrderByAlbumDesc();
 
-    Optional<Album> findByAlbum(String album);
+    Mono<Album> findByAlbum(String album);
 
     @Query(value = """
             SELECT
@@ -39,5 +36,5 @@ public interface AlbumRepository extends CrudRepository<Album, Long> {
                     i.published = true
             ORDER BY i.date DESC
             """)
-    HashSet<ThumbnailDto> findThumbnailsByAlbum(String album);
+    Flux<ThumbnailDto> findThumbnailsByAlbum(String album);
 }

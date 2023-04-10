@@ -4,6 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import world.deslauriers.domain.Album;
 import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.service.dto.AlbumDto;
@@ -23,7 +24,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Iterable<Album> getAll(){
+    public Flux<Album> getAll(){
         return albumRepository.findAllOrderByAlbumDesc();
     }
 

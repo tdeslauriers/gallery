@@ -18,7 +18,8 @@ repositories {
     mavenCentral()
 }
 
-graalvmNative.toolchainDetection = false
+graalvmNative.toolchainDetection = true
+
 micronaut {
     runtime("netty")
     testRuntime("junit5")
