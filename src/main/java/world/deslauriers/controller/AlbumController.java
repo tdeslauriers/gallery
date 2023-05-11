@@ -2,41 +2,36 @@ package world.deslauriers.controller;
 
 import io.micronaut.http.annotation.Controller;
 import io.micronaut.http.annotation.Get;
-import io.micronaut.scheduling.TaskExecutors;
-import io.micronaut.scheduling.annotation.ExecuteOn;
 import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
-import jakarta.inject.Inject;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.AlbumService;
 import world.deslauriers.service.dto.AlbumDto;
 
 import javax.validation.constraints.Size;
-import java.util.Optional;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
-@ExecuteOn(TaskExecutors.IO)
 @Controller("/albums")
 public class AlbumController {
 
-    @Inject
     protected final AlbumService albumService;
 
     public AlbumController(AlbumService albumService) {
         this.albumService = albumService;
     }
 
-    // drawer/menu
+    // drawer menu
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get
-    public Iterable<Album> getAll(){
+    public Flux<Album> getAll(){
         return albumService.getAll();
     }
 
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/{album}")
-    public Optional<AlbumDto> getByAlbum(@Size(min = 2, max = 32) String album){
-
+    public Mono<AlbumDto> getByAlbum(@Size(min = 2, max = 32) String album){
         return albumService.getThumbnailsByAlbum(album);
     }
 }

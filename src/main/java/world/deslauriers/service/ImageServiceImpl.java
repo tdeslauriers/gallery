@@ -1,9 +1,10 @@
 package world.deslauriers.service;
 
-import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.repository.ImageRepository;
@@ -11,18 +12,12 @@ import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
-import java.sql.SQLException;
-import java.util.Optional;
-
 @Singleton
 public class ImageServiceImpl implements ImageService {
 
     private static final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
 
-    @Inject
     private final ImageRepository imageRepository;
-
-    @Inject
     private final AlbumImageRepository albumImageRepository;
 
     public ImageServiceImpl(ImageRepository imageRepository, AlbumImageRepository albumImageRepository) {
@@ -31,70 +26,93 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Iterable<ThumbnailDto> getAllUnpublished(){
+    public Flux<ThumbnailDto> getAllUnpublished(){
         return imageRepository.findAllUnpublished();
     }
 
     @Override
-    public Iterable<Long> listImageIds(){
+    public Flux<Long> listImageIds(){
         return imageRepository.findAllImageIds();
     }
 
     @Override
-    public Optional<Image> getImageByFilename(String filename){
-        var dto = imageRepository.findByFilename(filename);
-        var image = new Image();
-        if (dto.isPresent()){
-            image.setId(dto.get().id());
-            image.setFilename(dto.get().filename());
-            image.setTitle(dto.get().title());
-            image.setDescription(dto.get().description());
-            image.setDate(dto.get().date());
-            image.setPublished(dto.get().published());
-            image.setThumbnail(dto.get().thumbnail());
-            image.setPresentation(dto.get().presentation());
-
-            var ai = albumImageRepository.findByImageId(dto.get().id());
-            if (ai.spliterator().getExactSizeIfKnown() > 0){
-                image.setAlbumImages(ai);
-            }
-        }
-
-        return Optional.of(image);
+    public Mono<Image> getImageByFilename(String filename){
+        return imageRepository
+                .findByFilename(filename)
+                .flatMap(imageDto -> Mono.just(new Image(
+                        imageDto.id(),
+                        imageDto.filename(),
+                        imageDto.title(),
+                        imageDto.description(),
+                        imageDto.date(),
+                        imageDto.published(),
+                        imageDto.thumbnail(),
+                        imageDto.presentation())))
+                .flatMap(image -> {
+                    var ai = albumImageRepository
+                            .findByImageId(image.getId())
+                            .flatMap(albumImage -> {
+                                return Mono.just(image.getAlbumImages().add(albumImage));
+                            })
+                            .blockLast();
+                    return Mono.just(image);
+                });
     }
 
     @Override
-    public void updateImage(ImageUpdateDto img) throws SQLException {
-
-       if (imageRepository.findById(img.id()).isEmpty()){
-
-           log.error("Attempt to update record that does not exist.");
-            throw new SQLException("Record not found.");
-       }
-       imageRepository.updateImage(img.id(), img.title(), img.description(), img.published());
+    public Mono<Image> updateImage(ImageUpdateDto img) {
+        return imageRepository
+                .findById(img.id())
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.error("Attempt to update image that does not exist: {}", img.id());
+                    return Mono.empty();
+                }))
+                .flatMap(image -> {
+                    image.setTitle(img.title());
+                    image.setDescription(img.description());
+                    image.setPublished(img.published());
+                    return imageRepository.update(image);
+                });
     }
 
     @Override
-    public Optional<FullResolutionDto> getFullResolution(String filename){
+    public Mono<FullResolutionDto> getFullResolution(String filename){
         return imageRepository.findFullResolutionByFilename(filename);
     }
 
     @Override
-    public Optional<Image> getImageById(Long id) {
+    public Mono<Image> getImageById(Long id) {
         return imageRepository.findById(id);
     }
 
     @Override
-    public void deleteImage(String filename) throws SQLException{
+    public Mono<Void> deleteImage(String filename){
 
-        var deleted = getImageByFilename(filename);
-        if (deleted.isEmpty()){
-            log.error("Attempt to delete a record that does not exist.");
-            throw new SQLException("Record not found");
-        }
-
-        // remove xrefs before deletion
-        deleted.get().getAlbumImages().forEach(albumImageRepository::delete);
-        imageRepository.delete(deleted.get());
+        return getImageByFilename(filename)
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.error("Attempting to delete an image that does not exist");
+                    return Mono.empty();
+                }))
+                .flatMap(image -> {
+                     Flux.fromStream(image.getAlbumImages().stream())
+                            .flatMap(albumImage -> {
+                                log.info("Deleting xref id: {} between image: {} and album {}.", albumImage.id(), image.getFilename(), albumImage.album().album());
+                                return albumImageRepository.delete(albumImage);
+                            })
+                             .doOnNext(id -> {
+                                 log.info("xref {} successfully deleted.", id);
+                             })
+                            .blockLast();
+                    return Mono.just(image);
+                })
+                .flatMap(image -> {
+                    log.info("Deleting image {}: {}", image.getId(), image.getFilename());
+                    return imageRepository.delete(image);
+                })
+                .flatMap(id -> {
+                    log.info("Image id: {} successfully deleted", id);
+                    return Mono.empty();
+                })
+                .then();
     }
 }

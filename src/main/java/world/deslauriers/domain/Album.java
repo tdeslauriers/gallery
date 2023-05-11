@@ -4,7 +4,6 @@ import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
-import io.micronaut.data.jdbc.annotation.JoinTable;
 import io.micronaut.serde.annotation.Serdeable;
 
 import javax.validation.constraints.NotNull;
@@ -18,7 +17,6 @@ public record Album(
 	@NotNull String album,
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "album")
-	@JoinTable(name = "album_image")
 	Set<AlbumImage> albumImages
 
 ){

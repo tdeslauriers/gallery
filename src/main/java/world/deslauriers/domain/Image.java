@@ -7,7 +7,6 @@ import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
-import io.micronaut.data.jdbc.annotation.JoinTable;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.time.LocalDate;
@@ -23,15 +22,11 @@ public class Image{
 	@Nullable private String description;
 	@JsonFormat(pattern="yyyy-MM-dd") @NonNull private LocalDate date;
 	@NonNull private  Boolean published;
-
 	private byte[] thumbnail;
-
 	private byte[] presentation;
-
 	@Nullable private byte[] image;
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
-	@JoinTable(name = "album_image")
 	private Set<AlbumImage> albumImages;
 
 	public Image() {

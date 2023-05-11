@@ -35,15 +35,6 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
     Mono<ImageDto> findByFilename(String filename);
 
     @Query(value = """
-            UPDATE image i SET
-                i.title = :title,
-                i.description = :description,
-                i.published = :published
-            WHERE i.id = :id
-            """)
-    void updateImage(Long id, String title, String description, Boolean published);
-
-    @Query(value = """
             SELECT
                 i.id,
                 i.filename,
@@ -81,5 +72,5 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
                 i.id
             FROM image i
             """)
-    Mono<Long> findAllImageIds();
+    Flux<Long> findAllImageIds();
 }
