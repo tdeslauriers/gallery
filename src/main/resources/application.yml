@@ -24,7 +24,7 @@ r2dbc:
   datasources:
     default:
       dialect: MYSQL
-      url: ${ALLOWANCE_R2DBC_URL}
+      url: ${GALLERY_R2DBC_URL}
       username: ${GALLERY_JDBC_USER}
       password: ${GALLERY_JDBC_PASSWORD}
 datasources:

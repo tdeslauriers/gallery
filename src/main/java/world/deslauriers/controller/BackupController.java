@@ -9,6 +9,8 @@ import io.micronaut.security.rules.SecurityRule;
 import jakarta.inject.Inject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.ImageService;
 
@@ -30,13 +32,13 @@ public class BackupController {
 
     @Secured({"COLD_STORAGE"})
     @Get("/list")
-    Iterable<Long> listImageIds(){
+    Flux<Long> listImageIds(){
         return imageService.listImageIds();
     }
 
     @Secured({"COLD_STORAGE"})
     @Get("/{id}")
-    public Optional<Image> getImage(Long id){
+    public Mono<Image> getImage(Long id){
         return imageService.getImageById(id);
     }
 

@@ -37,7 +37,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Mono<Image> getImageByFilename(String filename){
-        return imageRepository
+        return Mono.from(imageRepository
                 .findByFilename(filename)
                 .flatMap(imageDto -> Mono.just(new Image(
                         imageDto.id(),
@@ -48,15 +48,14 @@ public class ImageServiceImpl implements ImageService {
                         imageDto.published(),
                         imageDto.thumbnail(),
                         imageDto.presentation())))
-                .flatMap(image -> {
-                    var ai = albumImageRepository
+                .flatMapMany(image -> {
+                    return Mono.from(albumImageRepository
                             .findByImageId(image.getId())
                             .flatMap(albumImage -> {
-                                return Mono.just(image.getAlbumImages().add(albumImage));
-                            })
-                            .blockLast();
-                    return Mono.just(image);
-                });
+                                image.getAlbumImages().add(albumImage);
+                                return Mono.just(image);
+                            }));
+                }));
     }
 
     @Override
