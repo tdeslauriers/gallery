@@ -1,6 +1,7 @@
 package world.deslauriers.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.micronaut.core.annotation.NonNull;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.serde.annotation.Serdeable;
 
@@ -13,7 +14,6 @@ public record ThumbnailDto(
         @Nullable String title,
         @Nullable String description,
         @JsonFormat(pattern="yyyy-MM-dd") LocalDate date,
-        Boolean published,
-
+        @NonNull Boolean published,
         byte[] thumbnail
 ) {}

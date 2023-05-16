@@ -6,7 +6,6 @@ import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
-import io.micronaut.data.jdbc.annotation.JoinTable;
 import io.micronaut.serde.annotation.Serdeable;
 
 @Serdeable
@@ -17,13 +16,11 @@ public record AlbumImage(
 
     @Nullable
     @Relation(Relation.Kind.MANY_TO_ONE)
-    @JoinTable(name = "album")
     Album album,
 
     @Nullable
     @JsonIgnore
     @Relation(Relation.Kind.MANY_TO_ONE)
-    @JoinTable(name = "image")
     Image image
 ) {
     public AlbumImage(@Nullable Album album, @Nullable Image image) {

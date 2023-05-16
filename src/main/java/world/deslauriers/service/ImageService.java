@@ -1,25 +1,25 @@
 package world.deslauriers.service;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
-import java.sql.SQLException;
-import java.util.Optional;
-
 public interface ImageService {
-    Iterable<ThumbnailDto> getAllUnpublished();
 
-    Optional<Image> getImageByFilename(String filename);
+    Flux<ThumbnailDto> getAllUnpublished();
 
-    void updateImage(ImageUpdateDto img) throws SQLException;
+    Flux<Long> listImageIds();
 
-    void deleteImage(String filename) throws SQLException;
+    Mono<Image> getImageByFilename(String filename);
 
-    Iterable<Long> listImageIds();
+    Mono<Image> updateImage(ImageUpdateDto img);
 
-    Optional<FullResolutionDto> getFullResolution(String filename);
+    Mono<FullResolutionDto> getFullResolution(String filename);
 
-    Optional<Image> getImageById(Long id);
+    Mono<Image> getImageById(Long id);
+
+    Mono<Void> deleteImage(String filename);
 }

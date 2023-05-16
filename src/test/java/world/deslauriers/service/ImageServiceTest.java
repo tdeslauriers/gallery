@@ -2,13 +2,10 @@ package world.deslauriers.service;
 
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import world.deslauriers.domain.Image;
 import world.deslauriers.service.dto.ImageUpdateDto;
 
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,31 +27,43 @@ public class ImageServiceTest {
     void testImageServiceCrud() throws SQLException {
 
         // from test data:
-        var published = imageService.getImageByFilename("b33176d5-6eb8-484f-a2e9-cb5204424fcd");
-        assertTrue(published.isPresent());
+        var published = imageService
+                .getImageByFilename("b33176d5-6eb8-484f-a2e9-cb5204424fcd")
+                .block();
+        assertNotNull(published);
 
-        var unpublished = imageService.getImageByFilename("b3ea8216-0f42-4777-a505-bebca3c0edfb");
-        System.out.println(unpublished.get());
-        assertTrue(unpublished.isEmpty());
+        var unpublished = imageService
+                .getImageByFilename("b3ea8216-0f42-4777-a505-bebca3c0edfb")
+                .block();
+        assertNull(unpublished);
 
 
-        var updated = imageService.updateImage(new ImageUpdateDto(
-                                                                published.get().id(),
-                                                                "updated title",
-                                                                "updated description",
-                                                                published.get().published()));
-        assertNotNull(updated.id());
-        assertEquals(published.get().id(), updated.id());
-        assertEquals("updated title", updated.title());
+        var updated = imageService
+                .updateImage(new ImageUpdateDto(
+                                published.getId(),
+                                "updated title",
+                                "updated description",
+                                published.getPublished())
+                )
+                .block();
+        assertNotNull(updated.getId());
+        assertEquals(published.getId(), updated.getId());
+        assertEquals("updated title", updated.getTitle());
 
         // all unpublished
-        var allUnpublished = imageService.getAllUnpublished();
-        assertTrue(allUnpublished.spliterator().getExactSizeIfKnown() > 0);
+        var allUnpublished = imageService
+                .getAllUnpublished()
+                .collectList()
+                .block();
+        assertTrue(allUnpublished.size() > 0);
 
-        imageService.deleteImage(published.get().filename());
-        var deleted = imageService.getImageByFilename(published.get().filename());
-        System.out.println(deleted);
-        assertTrue(deleted.isEmpty());
+        imageService
+                .deleteImage(published.getFilename())
+                .block();
+        var deleted = imageService
+                .getImageByFilename(published.getFilename())
+                .block();
+        assertNull(deleted);
     }
 
 }

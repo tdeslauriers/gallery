@@ -1,12 +1,12 @@
 package world.deslauriers.service;
 
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.dto.AlbumDto;
 
-import java.util.Optional;
-
 public interface AlbumService {
-    Iterable<Album> getAll();
+    Flux<Album> getAll();
 
-    Optional<AlbumDto> getThumbnailsByAlbum(String album);
+    Mono<AlbumDto> getThumbnailsByAlbum(String album);
 }

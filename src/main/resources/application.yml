@@ -3,13 +3,14 @@ micronaut:
     name: gallery
   server:
     port: 8081
+  netty:
+    event-loops:
+      other:
+        num-threads: 10
+        prefer-native-transport: true
     cors:
       enabled: true
-#      configurations:
-#        web:
-#          allowedOrigins:
-#            - ${CORS_URL_GATEWAY}
-#            - ${CORS_URL_WORLD}
+
   security:
     token:
       jwt:
@@ -17,25 +18,21 @@ micronaut:
           secret:
             validation:
               secret: ${JWT_GENERATOR_SIGNATURE_SECRET} # fix this; wrong
-#  ssl:
-#    enabled: true
-#    port: 8444 # gateway using 8443
-#    buildSelfSigned: true
-#  http:
-#    client:
-#      ssl:
-#        enabled: true
-#        build-self-signed: true
+
 ---
+r2dbc:
+  datasources:
+    default:
+      dialect: MYSQL
+      url: ${GALLERY_R2DBC_URL}
+      username: ${GALLERY_JDBC_USER}
+      password: ${GALLERY_JDBC_PASSWORD}
 datasources:
   default:
     url: ${GALLERY_JDBC_URL}
     username: ${GALLERY_JDBC_USER}
     password: ${GALLERY_JDBC_PASSWORD}
     sql-dialect: ${GALLERY_JDBC_DIALECT}
-    driverClassName: com.mysql.cj.jdbc.Driver
-    maximum-pool-size: 20
-    max-lifetime: 10
 #    url: ${BACKUP_GALLERY_JDBC_URL} # for building backup tables
 #    username: ${BACKUP_GALLERY_JDBC_USER}
 #    password: ${BACKUP_GALLERY_JDBC_PASSWORD}

@@ -7,32 +7,37 @@ import io.micronaut.data.annotation.GeneratedValue;
 import io.micronaut.data.annotation.Id;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
-import io.micronaut.data.jdbc.annotation.JoinTable;
 import io.micronaut.serde.annotation.Serdeable;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 @Serdeable
 @MappedEntity
 public class Image{
 
-	@Id @GeneratedValue private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 	private String filename; // string of UUID
-	@Nullable private String title;
-	@Nullable private String description;
-	@JsonFormat(pattern="yyyy-MM-dd") @NonNull private LocalDate date;
-	@NonNull private  Boolean published;
-
+	@Nullable
+	private String title;
+	@Nullable
+	private String description;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@NonNull
+	private LocalDate date;
+	@NonNull
+	private Boolean published;
 	private byte[] thumbnail;
-
 	private byte[] presentation;
-
-	@Nullable private byte[] image;
+	@Nullable
+	private byte[] image;
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
-	@JoinTable(name = "album_image")
-	private Set<AlbumImage> albumImages;
+	private Set<AlbumImage> albumImages = new HashSet<>();
 
 	public Image() {
 	}
@@ -53,6 +58,15 @@ public class Image{
 		this.thumbnail = thumbnail;
 		this.presentation = presentation;
 		this.image = image;
+	}
+
+	public Image(Long id, String filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published) {
+		this.id = id;
+		this.filename = filename;
+		this.title = title;
+		this.description = description;
+		this.date = date;
+		this.published = published;
 	}
 
 	public Image(Long id, String filename, @Nullable String title, @Nullable String description, @NonNull LocalDate date, @NonNull Boolean published, byte[] thumbnail, byte[] presentation) {
@@ -78,6 +92,7 @@ public class Image{
 		this.image = image;
 		this.albumImages = albumImages;
 	}
+
 
 	public Long getId() {
 		return id;
@@ -161,5 +176,21 @@ public class Image{
 
 	public void setAlbumImages(Set<AlbumImage> albumImages) {
 		this.albumImages = albumImages;
+	}
+
+	@Override
+	public String toString() {
+		return "Image{" +
+				"id=" + id +
+				", filename='" + filename + '\'' +
+				", title='" + title + '\'' +
+				", description='" + description + '\'' +
+				", date=" + date +
+				", published=" + published +
+				", thumbnail=" + Arrays.toString(thumbnail) +
+				", presentation=" + Arrays.toString(presentation) +
+				", image=" + Arrays.toString(image) +
+				", albumImages=" + albumImages +
+				'}';
 	}
 }
