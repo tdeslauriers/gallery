@@ -31,7 +31,7 @@ public class AlbumController {
 
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})
     @Get("/{album}")
-    public Mono<AlbumDto> getByAlbum(@Size(min = 2, max = 32) String album){
+    public Mono<AlbumDto> getByAlbum(@Size(min = 2, max = 16) String album){
         return albumService.getThumbnailsByAlbum(album);
     }
 }

@@ -18,15 +18,23 @@ import java.util.Set;
 @MappedEntity
 public class Image{
 
-	@Id @GeneratedValue private Long id;
+	@Id
+	@GeneratedValue
+	private Long id;
 	private String filename; // string of UUID
-	@Nullable private String title;
-	@Nullable private String description;
-	@JsonFormat(pattern="yyyy-MM-dd") @NonNull private LocalDate date;
-	@NonNull private  Boolean published;
+	@Nullable
+	private String title;
+	@Nullable
+	private String description;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	@NonNull
+	private LocalDate date;
+	@NonNull
+	private Boolean published;
 	private byte[] thumbnail;
 	private byte[] presentation;
-	@Nullable private byte[] image;
+	@Nullable
+	private byte[] image;
 
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "image")
 	private Set<AlbumImage> albumImages = new HashSet<>();

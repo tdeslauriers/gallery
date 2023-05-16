@@ -73,4 +73,24 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
             FROM image i
             """)
     Flux<Long> findAllImageIds();
+
+    @Query(value = """
+            SELECT
+                i.id,
+                i.filename,
+                i.title,
+                i.description,
+                i.date,
+                i.published,
+                i.thumbnail
+            FROM image i
+                LEFT JOIN album_image ai ON i.id = ai.image_id
+                LEFT JOIN album a ON ai.album_id = a.id
+            WHERE
+                    a.album = :album
+                AND
+                    i.published = true
+            ORDER BY i.date DESC
+            """)
+    Flux<ThumbnailDto> findThumbnailsByAlbum(String album);
 }
