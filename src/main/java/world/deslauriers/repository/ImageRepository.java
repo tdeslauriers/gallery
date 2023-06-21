@@ -12,6 +12,8 @@ import world.deslauriers.repository.dto.ImageDto;
 import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
+import java.time.LocalDate;
+
 @R2dbcRepository(dialect = Dialect.MYSQL)
 public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
 
@@ -93,4 +95,27 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
             ORDER BY i.date DESC
             """)
     Flux<ThumbnailDto> findThumbnailsByAlbum(String album);
+
+    @Query("""
+            INSERT INTO image (
+                id,
+                filename,
+                title,
+                description,
+                date, published,
+                thumbnail,
+                presentation,
+                image)
+            VALUES (
+                :id,
+                :filename,
+                :title,
+                :description,
+                :date,
+                :published,
+                :thumbnail,
+                :presentation,
+                :image)
+                """)
+    Mono<Image> saveRestoreImage(Long id, String filename, String title, String description, LocalDate date, Boolean published, byte[] thumbnail, byte[] presentation, byte[] image);
 }

@@ -10,6 +10,7 @@ import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ImageUpdateDto;
+import world.deslauriers.service.dto.RestoreImage;
 import world.deslauriers.service.dto.ThumbnailDto;
 
 @Singleton
@@ -113,5 +114,20 @@ public class ImageServiceImpl implements ImageService {
                     return Mono.empty();
                 })
                 .then();
+    }
+
+    @Override
+    public Mono<Image> restoreImage(RestoreImage restoreImage) {
+        return imageRepository.saveRestoreImage(
+                restoreImage.id(),
+                restoreImage.filename(),
+                restoreImage.title(),
+                restoreImage.description(),
+                restoreImage.date(),
+                restoreImage.published(),
+                restoreImage.thumbnail(),
+                restoreImage.presentation(),
+                restoreImage.image()
+        );
     }
 }

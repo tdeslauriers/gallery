@@ -9,6 +9,7 @@ import world.deslauriers.domain.Album;
 import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.repository.ImageRepository;
 import world.deslauriers.service.dto.AlbumDto;
+import world.deslauriers.service.dto.RestoreAlbum;
 
 import java.util.HashSet;
 import java.util.stream.Collectors;
@@ -42,5 +43,10 @@ public class AlbumServiceImpl implements AlbumService {
                 }))
                 .collect(Collectors.toSet())
                 .map(thumbnailDtos -> new AlbumDto(album, new HashSet<>(thumbnailDtos)));
+    }
+
+    @Override
+    public Mono<Album> saveRestoredAlbum(RestoreAlbum restoreAlbum) {
+        return albumRepository.saveRestoreAlbum(restoreAlbum.id(), restoreAlbum.album());
     }
 }

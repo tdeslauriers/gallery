@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.ImageService;
 
-@Secured(SecurityRule.IS_AUTHENTICATED)
+@Secured({"COLD_STORAGE"})
 @Controller("/backup")
 public class BackupController {
 
@@ -23,13 +23,11 @@ public class BackupController {
         this.imageService = imageService;
     }
 
-    @Secured({"COLD_STORAGE"})
     @Get("/list")
     Flux<Long> listImageIds(){
         return imageService.listImageIds();
     }
 
-    @Secured({"COLD_STORAGE"})
     @Get("/{id}")
     public Mono<Image> getImage(Long id){
         return imageService.getImageById(id);
