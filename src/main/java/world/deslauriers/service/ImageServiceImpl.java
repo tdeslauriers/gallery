@@ -117,7 +117,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Mono<Image> restoreImage(RestoreImage restoreImage) {
+    public Mono<Void> restoreImage(RestoreImage restoreImage) {
         return imageRepository.saveRestoreImage(
                 restoreImage.id(),
                 restoreImage.filename(),

@@ -9,9 +9,9 @@ import world.deslauriers.service.dto.BackupAlbumImage;
 import world.deslauriers.service.dto.BackupImage;
 
 public interface RestoreService {
-    Mono<Album> restoreAlbum(BackupAlbum backupAlbum);
+    Mono<Void> restoreAlbum(BackupAlbum backupAlbum);
 
-    Mono<Image> restoreImage(BackupImage backupImage);
+    Mono<Void> restoreImage(BackupImage backupImage);
 
-    Mono<AlbumImage> restoreAlbumImage(BackupAlbumImage backupAlbumImage);
+    Mono<Void> restoreAlbumImage(BackupAlbumImage backupAlbumImage);
 }

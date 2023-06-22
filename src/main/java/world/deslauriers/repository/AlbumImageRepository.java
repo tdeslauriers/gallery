@@ -20,6 +20,6 @@ public interface AlbumImageRepository extends ReactorCrudRepository<AlbumImage, 
     @Join(value = "image", type = Join.Type.LEFT_FETCH)
     Flux<AlbumImage> findByImageId(Long id);
 
-    @Query(value = "INSERT INTO album_image (id, album_id, image_id) VALUES (:id, :albumId, :imageId)")
-    Mono<AlbumImage> saveRestoreAlbumImage(Long id, Long albumId, Long imageId);
+    @Query("INSERT INTO album_image (id, album_id, image_id) VALUES (:id, :albumId, :imageId)")
+    Mono<Void> saveRestoreAlbumImage(Long id, Long albumId, Long imageId);
 }

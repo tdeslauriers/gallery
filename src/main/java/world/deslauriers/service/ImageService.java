@@ -24,5 +24,5 @@ public interface ImageService {
 
     Mono<Void> deleteImage(String filename);
 
-    Mono<Image> restoreImage(RestoreImage restoreImage);
+    Mono<Void> restoreImage(RestoreImage restoreImage);
 }

@@ -117,5 +117,5 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
                 :presentation,
                 :image)
                 """)
-    Mono<Image> saveRestoreImage(Long id, String filename, String title, String description, LocalDate date, Boolean published, byte[] thumbnail, byte[] presentation, byte[] image);
+    Mono<Void> saveRestoreImage(Long id, String filename, String title, String description, LocalDate date, Boolean published, byte[] thumbnail, byte[] presentation, byte[] image);
 }

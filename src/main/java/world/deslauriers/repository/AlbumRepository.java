@@ -7,8 +7,6 @@ import io.micronaut.data.repository.reactive.ReactorCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Album;
-import world.deslauriers.service.dto.RestoreAlbum;
-
 
 @R2dbcRepository(dialect = Dialect.MYSQL)
 public interface AlbumRepository extends ReactorCrudRepository<Album, Long> {
@@ -18,6 +16,6 @@ public interface AlbumRepository extends ReactorCrudRepository<Album, Long> {
 
     Mono<Album> findByAlbum(String album);
 
-    @Query("INSERT INTO (id, album) album VALUES (:id, :album)")
-    Mono<Album> saveRestoreAlbum(Long id, String album);
+    @Query(value = "INSERT INTO album (id, album) VALUES (:id, :album)", nativeQuery = true)
+    Mono<Void> saveRestoreAlbum(Long id, String album);
 }

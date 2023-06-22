@@ -25,7 +25,7 @@ public class RestoreServiceImpl implements RestoreService {
     }
 
     @Override
-    public Mono<Album> restoreAlbum(BackupAlbum backupAlbum) {
+    public Mono<Void> restoreAlbum(BackupAlbum backupAlbum) {
 
         // TODO: add decryption/type-conversion logic after initial data restore.
         // TODO: add check to see if record exists, or is more current than backup.
@@ -35,7 +35,7 @@ public class RestoreServiceImpl implements RestoreService {
     }
 
     @Override
-    public Mono<Image> restoreImage(BackupImage backupImage) {
+    public Mono<Void> restoreImage(BackupImage backupImage) {
 
         // TODO: add decryption/type-conversion logic after initial data restore.
         // TODO: add check to see if record exists, or is more current than backup.
@@ -54,7 +54,7 @@ public class RestoreServiceImpl implements RestoreService {
     }
 
     @Override
-    public Mono<AlbumImage> restoreAlbumImage(BackupAlbumImage backupAlbumImage) {
+    public Mono<Void> restoreAlbumImage(BackupAlbumImage backupAlbumImage) {
         return albumImageService.restoreAlbumImage(new RestoreAlbumImage(backupAlbumImage.id(), backupAlbumImage.album_id(), backupAlbumImage.image_id()));
     }
 }

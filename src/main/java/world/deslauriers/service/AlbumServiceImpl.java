@@ -46,7 +46,7 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public Mono<Album> saveRestoredAlbum(RestoreAlbum restoreAlbum) {
+    public Mono<Void> saveRestoredAlbum(RestoreAlbum restoreAlbum) {
         return albumRepository.saveRestoreAlbum(restoreAlbum.id(), restoreAlbum.album());
     }
 }

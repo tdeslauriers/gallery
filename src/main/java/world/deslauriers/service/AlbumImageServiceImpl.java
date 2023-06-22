@@ -2,7 +2,6 @@ package world.deslauriers.service;
 
 import jakarta.inject.Singleton;
 import reactor.core.publisher.Mono;
-import world.deslauriers.domain.AlbumImage;
 import world.deslauriers.repository.AlbumImageRepository;
 import world.deslauriers.service.dto.RestoreAlbumImage;
 
@@ -16,7 +15,7 @@ public class AlbumImageServiceImpl implements AlbumImageService {
     }
 
     @Override
-    public Mono<AlbumImage> restoreAlbumImage(RestoreAlbumImage restoreAlbumImage) {
+    public Mono<Void> restoreAlbumImage(RestoreAlbumImage restoreAlbumImage) {
         return albumImageRepository.saveRestoreAlbumImage(restoreAlbumImage.id(), restoreAlbumImage.album_id(), restoreAlbumImage.image_id());
     }
 }
