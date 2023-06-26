@@ -34,7 +34,11 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
             FROM image i
             WHERE i.filename = :filename
             """)
-    Mono<ImageDto> findByFilename(String filename);
+    Mono<ImageDto> findByUuid(String filename);
+
+    @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
+    @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)
+    Mono<Image> findByFilename(String filename);
 
     @Query(value = """
             SELECT

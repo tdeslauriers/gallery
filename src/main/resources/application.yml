@@ -4,9 +4,10 @@ micronaut:
   server:
     port: 8081
   netty:
+    max-request-size: 10MB
     event-loops:
       other:
-        num-threads: 10
+        num-threads: 30
         prefer-native-transport: true
     cors:
       enabled: true
@@ -27,6 +28,7 @@ r2dbc:
       url: ${GALLERY_R2DBC_URL}
       username: ${GALLERY_JDBC_USER}
       password: ${GALLERY_JDBC_PASSWORD}
+      maximum-pool-size: 100
 datasources:
   default:
     url: ${GALLERY_JDBC_URL}

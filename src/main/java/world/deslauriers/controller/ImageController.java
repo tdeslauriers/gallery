@@ -28,7 +28,7 @@ public class ImageController {
     @Secured({"GALLERY_READ", "GALLERY_EDIT", "COLD_STORAGE"})
     @Get("/{filename}")
     public Mono<Image> getImage(String filename){
-        return imageService.getImageByFilename(filename);
+        return imageService.getImageByUuid(filename);
     }
 
     @Secured({"GALLERY_READ", "GALLERY_EDIT"})

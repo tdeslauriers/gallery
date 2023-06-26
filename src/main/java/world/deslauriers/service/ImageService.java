@@ -14,7 +14,9 @@ public interface ImageService {
 
     Flux<Long> listImageIds();
 
-    Mono<Image> getImageByFilename(String filename);
+    Mono<Image> getImageByUuid(String filename);
+
+    Mono<Image> getByFilename(String filename);
 
     Mono<Image> updateImage(ImageUpdateDto img);
 

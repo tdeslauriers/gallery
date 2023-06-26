@@ -37,9 +37,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Mono<Image> getImageByFilename(String filename){
+    public Mono<Image> getImageByUuid(String filename){
         return Mono.from(imageRepository
-                .findByFilename(filename)
+                .findByUuid(filename)
                 .flatMap(imageDto -> Mono.just(new Image(
                         imageDto.id(),
                         imageDto.filename(),
@@ -49,14 +49,17 @@ public class ImageServiceImpl implements ImageService {
                         imageDto.published(),
                         imageDto.thumbnail(),
                         imageDto.presentation())))
-                .flatMapMany(image -> {
-                    return Mono.from(albumImageRepository
-                            .findByImageId(image.getId())
-                            .flatMap(albumImage -> {
-                                image.getAlbumImages().add(albumImage);
-                                return Mono.just(image);
-                            }));
-                }));
+                .flatMapMany(image -> Mono.from(albumImageRepository
+                        .findByImageId(image.getId())
+                        .flatMap(albumImage -> {
+                            image.getAlbumImages().add(albumImage);
+                            return Mono.just(image);
+                        }))));
+    }
+
+    @Override
+    public Mono<Image> getByFilename(String filename){
+        return imageRepository.findByFilename(filename);
     }
 
     @Override
@@ -88,21 +91,24 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Mono<Void> deleteImage(String filename){
 
-        return getImageByFilename(filename)
+        return getImageByUuid(filename)
                 .switchIfEmpty(Mono.defer(() -> {
                     log.error("Attempting to delete an image that does not exist");
                     return Mono.empty();
                 }))
                 .flatMap(image -> {
-                     Flux.fromStream(image.getAlbumImages().stream())
-                            .flatMap(albumImage -> {
-                                log.info("Deleting xref id: {} between image: {} and album {}.", albumImage.id(), image.getFilename(), albumImage.album().album());
-                                return albumImageRepository.delete(albumImage);
-                            })
-                             .doOnNext(id -> {
-                                 log.info("xref {} successfully deleted.", id);
+                     var albumimages = Flux.fromStream(image.getAlbumImages().stream());
+                     var delComplete = albumimages
+                             .concatMap(albumImage -> {
+                                 log.info("Deleting xref id: {} between image: {} and album {}.", albumImage.id(), image.getFilename(), albumImage.album().album());
+                                 return albumImageRepository.delete(albumImage);
                              })
-                            .blockLast();
+                             .then();
+                     delComplete.subscribe(
+                             unused -> log.info("xref deletion activities complete."),
+                             error -> log.error("failed to delete all xrefs")
+                     );
+
                     return Mono.just(image);
                 })
                 .flatMap(image -> {

@@ -14,10 +14,10 @@ public record BackupImage(
         @NonNull String filename, // string of UUID
         @Nullable String title,
         @Nullable String description,
-        @JsonFormat(pattern="yyyy-MM-dd") @NonNull LocalDate date,
+        @NonNull String date,
         @NonNull Boolean published,
-        @NotNull byte[] thumbnail,
-        @NotNull byte[] presentation,
-        @NotNull byte[] image
+        @Nullable String thumbnail,
+        @Nullable String presentation,
+        @Nullable String image
 ) {
 }

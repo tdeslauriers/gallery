@@ -9,6 +9,10 @@ import world.deslauriers.domain.AlbumImage;
 import world.deslauriers.domain.Image;
 import world.deslauriers.service.dto.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Base64;
+
 @Singleton
 public class RestoreServiceImpl implements RestoreService {
 
@@ -40,17 +44,22 @@ public class RestoreServiceImpl implements RestoreService {
         // TODO: add decryption/type-conversion logic after initial data restore.
         // TODO: add check to see if record exists, or is more current than backup.
         // temp
-        return imageService.restoreImage(new RestoreImage(
-                backupImage.id(),
-                backupImage.filename(),
-                backupImage.title(),
-                backupImage.description(),
-                backupImage.date(),
-                backupImage.published(),
-                backupImage.thumbnail(),
-                backupImage.presentation(),
-                backupImage.image()
-        ));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        var date = LocalDateTime.parse(backupImage.date(), formatter).toLocalDate();
+
+//        byte[] thumbnail = Base64.getDecoder().decode(backupImage.thumbnail());
+//        byte[] presentation = Base64.getDecoder().decode(backupImage.presentation());
+//        byte[] image = Base64.getDecoder().decode(backupImage.image());
+
+        return imageService.getByFilename(backupImage.filename())
+                .flatMap(image -> imageService.updateImage(new ImageUpdateDto(
+                        image.getId(),
+                        backupImage.title(),
+                        backupImage.description(),
+                        backupImage.published()
+                )))
+                .then();
     }
 
     @Override

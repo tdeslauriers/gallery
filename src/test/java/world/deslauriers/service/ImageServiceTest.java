@@ -28,12 +28,12 @@ public class ImageServiceTest {
 
         // from test data:
         var published = imageService
-                .getImageByFilename("b33176d5-6eb8-484f-a2e9-cb5204424fcd")
+                .getImageByUuid("b33176d5-6eb8-484f-a2e9-cb5204424fcd")
                 .block();
         assertNotNull(published);
 
         var unpublished = imageService
-                .getImageByFilename("b3ea8216-0f42-4777-a505-bebca3c0edfb")
+                .getImageByUuid("b3ea8216-0f42-4777-a505-bebca3c0edfb")
                 .block();
         assertNull(unpublished);
 
@@ -61,7 +61,7 @@ public class ImageServiceTest {
                 .deleteImage(published.getFilename())
                 .block();
         var deleted = imageService
-                .getImageByFilename(published.getFilename())
+                .getImageByUuid(published.getFilename())
                 .block();
         assertNull(deleted);
     }
