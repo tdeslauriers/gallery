@@ -49,4 +49,22 @@ public class AlbumServiceImpl implements AlbumService {
     public Mono<Void> saveRestoredAlbum(RestoreAlbum restoreAlbum) {
         return albumRepository.saveRestoreAlbum(restoreAlbum.id(), restoreAlbum.album());
     }
+
+    @Override
+    public Mono<Album> saveAlbum(Album album) {
+        return albumRepository
+                .existsByAlbumName(album.album())
+                .flatMap(exists -> {
+                    if (exists){
+                        return Mono.error(new IllegalStateException("Album with this name already exists."));
+                    } else {
+                        return albumRepository.save(album);
+                    }
+                });
+    }
+
+    @Override
+    public Mono<Album> updateAlbum(Album album) {
+        return albumRepository.update(album);
+    }
 }

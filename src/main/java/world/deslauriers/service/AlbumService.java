@@ -12,4 +12,8 @@ public interface AlbumService {
     Mono<AlbumDto> getThumbnailsByAlbum(String album);
 
     Mono<Void> saveRestoredAlbum(RestoreAlbum restoreAlbum);
+
+    Mono<Album> saveAlbum(Album album);
+
+    Mono<Album> updateAlbum(Album album);
 }
