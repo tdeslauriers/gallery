@@ -16,8 +16,8 @@ public interface AlbumRepository extends ReactorCrudRepository<Album, Long> {
 
     Mono<Album> findByAlbum(String album);
 
-    @Query(value = "INSERT INTO album (id, album) VALUES (:id, :album)", nativeQuery = true)
-    Mono<Void> saveRestoreAlbum(Long id, String album);
+    @Query(value = "INSERT INTO album (id, album, description) VALUES (:id, :album, :description)", nativeQuery = true)
+    Mono<Void> saveRestoreAlbum(Long id, String album, String description);
 
-    Mono<Boolean> existsByAlbumName(String album);
+    Mono<Boolean> existsByAlbum(String album);
 }
