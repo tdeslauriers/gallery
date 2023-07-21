@@ -8,7 +8,7 @@ import io.micronaut.serde.annotation.Serdeable;
 import java.time.LocalDate;
 
 @Serdeable
-public record ImageDto(
+public record PresentationDto(
         Long id,
         String filename, // string of UUID
         @Nullable String title,
@@ -17,6 +17,6 @@ public record ImageDto(
         @NonNull Boolean published,
         byte[] thumbnail,
         byte[] presentation
-
 ) {
+
 }

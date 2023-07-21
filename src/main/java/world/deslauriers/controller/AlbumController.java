@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Album;
 import world.deslauriers.service.AlbumService;
 import world.deslauriers.service.dto.AlbumDto;
+import world.deslauriers.service.dto.ThumbnailDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
@@ -23,24 +24,23 @@ public class AlbumController {
         this.albumService = albumService;
     }
 
-    // drawer menu
     @Secured({"GALLERY_READ"})
     @Get
-    public Flux<Album> getAll(){
+    public Flux<Album> getPopulated(){
         return albumService.getAll();
     }
 
     @Secured({"GALLERY_READ"})
     @Get("/{album}")
-    public Mono<AlbumDto> getByAlbum(@Size(min = 2, max = 16) String album){
+    public Flux<ThumbnailDto> getByAlbum(@Size(min = 2, max = 16) String album){
         return albumService.getThumbnailsByAlbum(album);
     }
 
     @Secured({"GALLERY_EDIT"})
     @Post
-    public Mono<HttpResponse<Album>> saveAlbum(@Body @Valid Album album){
+    public Mono<HttpResponse<Album>> saveAlbum(@Body @Valid AlbumDto cmd){
         return albumService
-                .saveAlbum(album)
+                .saveAlbum(cmd)
                 .map(HttpResponse::created);
 
     }

@@ -22,4 +22,9 @@ public interface AlbumImageRepository extends ReactorCrudRepository<AlbumImage, 
 
     @Query("INSERT INTO album_image (id, album_id, image_id) VALUES (:id, :albumId, :imageId)")
     Mono<Void> saveRestoreAlbumImage(Long id, Long albumId, Long imageId);
+
+    @Join(value = "album", type = Join.Type.LEFT_FETCH)
+    @Join(value = "image", type = Join.Type.LEFT_FETCH)
+    Mono<AlbumImage> findByImageIdAndAlbumId(Long albumId, Long imageId);
+
 }

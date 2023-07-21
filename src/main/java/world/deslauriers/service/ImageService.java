@@ -3,10 +3,7 @@ package world.deslauriers.service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
-import world.deslauriers.service.dto.FullResolutionDto;
-import world.deslauriers.service.dto.ImageUpdateDto;
-import world.deslauriers.service.dto.RestoreImage;
-import world.deslauriers.service.dto.ThumbnailDto;
+import world.deslauriers.service.dto.*;
 
 public interface ImageService {
 
@@ -14,7 +11,7 @@ public interface ImageService {
 
     Flux<Long> listImageIds();
 
-    Mono<Image> getImageByUuid(String filename);
+    Mono<ImageDto> getImageByUuid(String filename);
 
     Mono<Image> getByFilename(String filename);
 

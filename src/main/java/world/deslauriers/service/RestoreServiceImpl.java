@@ -4,14 +4,10 @@ import jakarta.inject.Singleton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import world.deslauriers.domain.Album;
-import world.deslauriers.domain.AlbumImage;
-import world.deslauriers.domain.Image;
 import world.deslauriers.service.dto.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Base64;
 
 @Singleton
 public class RestoreServiceImpl implements RestoreService {
@@ -29,7 +25,7 @@ public class RestoreServiceImpl implements RestoreService {
     }
 
     @Override
-    public Mono<Void> restoreAlbum(BackupAlbum backupAlbum) {
+    public Mono<Void> restoreAlbum(AlbumDto backupAlbum) {
 
         // TODO: add decryption/type-conversion logic after initial data restore.
         // TODO: add check to see if record exists, or is more current than backup.
@@ -54,7 +50,7 @@ public class RestoreServiceImpl implements RestoreService {
 
         return imageService.getByFilename(backupImage.filename())
                 .flatMap(image -> imageService.updateImage(new ImageUpdateDto(
-                        image.getId(),
+                        image.getFilename(),
                         backupImage.title(),
                         backupImage.description(),
                         backupImage.published()
@@ -64,6 +60,6 @@ public class RestoreServiceImpl implements RestoreService {
 
     @Override
     public Mono<Void> restoreAlbumImage(BackupAlbumImage backupAlbumImage) {
-        return albumImageService.restoreAlbumImage(new RestoreAlbumImage(backupAlbumImage.id(), backupAlbumImage.album_id(), backupAlbumImage.image_id()));
+        return albumImageService.restoreAlbumImage(new AlbumImageDto(backupAlbumImage.id(), backupAlbumImage.album_id(), backupAlbumImage.image_id()));
     }
 }

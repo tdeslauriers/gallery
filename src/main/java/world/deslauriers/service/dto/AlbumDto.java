@@ -3,15 +3,13 @@ package world.deslauriers.service.dto;
 import io.micronaut.core.annotation.Nullable;
 import io.micronaut.serde.annotation.Serdeable;
 
-import java.util.HashSet;
-
 @Serdeable
 public record AlbumDto(
+        @Nullable Long id,
         String album,
-        @Nullable String description,
-        HashSet<ThumbnailDto> thumbnails
+        String description
 ) {
-    public AlbumDto(String album, HashSet<ThumbnailDto> thumbnails) {
-        this(album, null, thumbnails);
+    public AlbumDto(Long id, String album) {
+        this(id, album, null);
     }
 }

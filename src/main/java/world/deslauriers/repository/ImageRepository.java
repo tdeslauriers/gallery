@@ -8,7 +8,7 @@ import io.micronaut.data.repository.reactive.ReactorCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import world.deslauriers.domain.Image;
-import world.deslauriers.repository.dto.ImageDto;
+import world.deslauriers.repository.dto.PresentationDto;
 import world.deslauriers.service.dto.FullResolutionDto;
 import world.deslauriers.service.dto.ThumbnailDto;
 
@@ -34,7 +34,7 @@ public interface ImageRepository extends ReactorCrudRepository<Image, Long> {
             FROM image i
             WHERE i.filename = :filename
             """)
-    Mono<ImageDto> findByUuid(String filename);
+    Mono<PresentationDto> findByUuid(String filename);
 
     @Join(value = "albumImages", type = Join.Type.LEFT_FETCH)
     @Join(value = "albumImages.album", type = Join.Type.LEFT_FETCH)

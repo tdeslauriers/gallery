@@ -5,13 +5,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+import world.deslauriers.domain.Album;
+import world.deslauriers.domain.AlbumImage;
 import world.deslauriers.domain.Image;
 import world.deslauriers.repository.AlbumImageRepository;
+import world.deslauriers.repository.AlbumRepository;
 import world.deslauriers.repository.ImageRepository;
-import world.deslauriers.service.dto.FullResolutionDto;
-import world.deslauriers.service.dto.ImageUpdateDto;
-import world.deslauriers.service.dto.RestoreImage;
-import world.deslauriers.service.dto.ThumbnailDto;
+import world.deslauriers.service.dto.*;
+
+import java.util.stream.Collectors;
 
 @Singleton
 public class ImageServiceImpl implements ImageService {
@@ -19,12 +22,16 @@ public class ImageServiceImpl implements ImageService {
     private static final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
 
     private final ImageRepository imageRepository;
+
+    private final AlbumRepository albumRepository;
     private final AlbumImageRepository albumImageRepository;
 
-    public ImageServiceImpl(ImageRepository imageRepository, AlbumImageRepository albumImageRepository) {
+    public ImageServiceImpl(ImageRepository imageRepository, AlbumRepository albumRepository, AlbumImageRepository albumImageRepository) {
         this.imageRepository = imageRepository;
+        this.albumRepository = albumRepository;
         this.albumImageRepository = albumImageRepository;
     }
+
 
     @Override
     public Flux<ThumbnailDto> getAllUnpublished(){
@@ -37,24 +44,27 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Mono<Image> getImageByUuid(String filename){
-        return Mono.from(imageRepository
+    public Mono<ImageDto> getImageByUuid(String filename){
+        return imageRepository
                 .findByUuid(filename)
-                .flatMap(imageDto -> Mono.just(new Image(
-                        imageDto.id(),
-                        imageDto.filename(),
-                        imageDto.title(),
-                        imageDto.description(),
-                        imageDto.date(),
-                        imageDto.published(),
-                        imageDto.thumbnail(),
-                        imageDto.presentation())))
-                .flatMapMany(image -> Mono.from(albumImageRepository
-                        .findByImageId(image.getId())
-                        .flatMap(albumImage -> {
-                            image.getAlbumImages().add(albumImage);
-                            return Mono.just(image);
-                        }))));
+                .flatMap(presentationDto -> Mono.just(new ImageDto(
+                        presentationDto.id(),
+                        presentationDto.filename(),
+                        presentationDto.title(),
+                        presentationDto.description(),
+                        presentationDto.date(),
+                        presentationDto.published(),
+                        presentationDto.thumbnail(),
+                        presentationDto.presentation()
+                )))
+                .flatMap(imageDto -> albumImageRepository
+                        .findByImageId(imageDto.getId())
+                        .flatMap(albumImage -> Mono.just(albumImage.album()))
+                        .collect(Collectors.toSet())
+                        .flatMap(albums -> {
+                            imageDto.getAlbums().addAll(albums);
+                            return Mono.just(imageDto);
+                        }));
     }
 
     @Override
@@ -63,17 +73,48 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public Mono<Image> updateImage(ImageUpdateDto img) {
+    public Mono<Image> updateImage(ImageUpdateDto cmd) {
         return imageRepository
-                .findById(img.id())
+                .findByFilename(cmd.filename())
                 .switchIfEmpty(Mono.defer(() -> {
-                    log.error("Attempt to update image that does not exist: {}", img.id());
+                    log.error("Attempt to update image that does not exist: {}", cmd.filename());
                     return Mono.empty();
                 }))
                 .flatMap(image -> {
-                    image.setTitle(img.title());
-                    image.setDescription(img.description());
-                    image.setPublished(img.published());
+                    image.setTitle(cmd.title());
+                    image.setDescription(cmd.description());
+                    image.setPublished(cmd.published());
+
+                    // resolve album additions
+                    // album removals handled by client calls
+                    if (cmd.albums() != null){
+                        if (cmd.albums().size() < 1){
+                            return Mono.error(new Throwable("Image must be associated with at least one album."));
+                        } else {
+                           Flux.fromStream(cmd.albums().stream())
+                                    .flatMap(album -> albumRepository
+                                            .findByAlbum(album.album())
+                                            .switchIfEmpty(Mono.defer(() -> {
+                                                log.error("Album {} does not exist, cannot associate", album.album());
+                                                return Mono.empty();
+                                            })))
+                                    .flatMap(album -> {
+                                        if (image.getAlbumImages()
+                                                .stream()
+                                                .noneMatch(albumImage -> albumImage.album().album().equals(album.album()))){
+                                            log.info("Album {} not yet associated with image {}: creating xref", album.album(), image.getFilename());
+                                            return albumImageRepository
+                                                    .save(new AlbumImage(album, image))
+                                                    .flatMap(albumImage -> {
+                                                        log.info("Successfully saved xref {}: album {} --> image {} - {}", albumImage.id(), albumImage.album().album(), image.getFilename(), image.getTitle());
+                                                        return Mono.just(albumImage.album());
+                                                    });
+                                        }
+                                        return Mono.just(album);
+                                    })
+                                   .subscribe();
+                        }
+                    }
                     return imageRepository.update(image);
                 });
     }
@@ -91,35 +132,25 @@ public class ImageServiceImpl implements ImageService {
     @Override
     public Mono<Void> deleteImage(String filename){
 
-        return getImageByUuid(filename)
+         return getImageByUuid(filename)
                 .switchIfEmpty(Mono.defer(() -> {
                     log.error("Attempting to delete an image that does not exist");
                     return Mono.empty();
                 }))
-                .flatMap(image -> {
-                     var albumimages = Flux.fromStream(image.getAlbumImages().stream());
-                     var delComplete = albumimages
-                             .concatMap(albumImage -> {
-                                 log.info("Deleting xref id: {} between image: {} and album {}.", albumImage.id(), image.getFilename(), albumImage.album().album());
-                                 return albumImageRepository.delete(albumImage);
-                             })
-                             .then();
-                     delComplete.subscribe(
-                             unused -> log.info("xref deletion activities complete."),
-                             error -> log.error("failed to delete all xrefs")
-                     );
-
-                    return Mono.just(image);
+                .flatMap(imageDto -> {
+                    return albumImageRepository
+                            .findByImageId(imageDto.getId())
+                            .flatMap(albumImage -> {
+                                log.info("Deleting xref id: {} between image: {} and album {}.", albumImage.id(), imageDto.getFilename(), albumImage.album());
+                                return albumImageRepository.delete(albumImage);
+                            })
+                            .collectList()
+                            .flatMap(longs -> {
+                                log.info("Deleting image: {}", imageDto.getFilename());
+                                return imageRepository.deleteById(imageDto.getId());
+                            });
                 })
-                .flatMap(image -> {
-                    log.info("Deleting image {}: {}", image.getId(), image.getFilename());
-                    return imageRepository.delete(image);
-                })
-                .flatMap(id -> {
-                    log.info("Image id: {} successfully deleted", id);
-                    return Mono.empty();
-                })
-                .then();
+                 .then();
     }
 
     @Override
@@ -136,4 +167,6 @@ public class ImageServiceImpl implements ImageService {
                 restoreImage.image()
         );
     }
+
+
 }

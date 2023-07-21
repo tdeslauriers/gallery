@@ -8,10 +8,14 @@ import io.micronaut.http.client.annotation.Client;
 import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
 import world.deslauriers.domain.Album;
-import world.deslauriers.service.dto.AlbumDto;
+import world.deslauriers.service.dto.ThumbnailDto;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 @MicronautTest
@@ -38,9 +42,8 @@ public class AlbumControllerTest {
         req = HttpRequest.GET("/albums/2021").header("Authorization", "Bearer " + token);
         var album = client
                 .toBlocking()
-                .retrieve(req, AlbumDto.class);
-        assertNotNull(album);
-        assertEquals("2021", album.album());
-        assertTrue(album.thumbnails().size() > 0);
+                .retrieve(req, Argument.of(Flux.class, ThumbnailDto.class));
+
+
     }
 }

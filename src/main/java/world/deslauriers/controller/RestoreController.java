@@ -7,7 +7,7 @@ import io.micronaut.http.annotation.Post;
 import io.micronaut.security.annotation.Secured;
 import reactor.core.publisher.Mono;
 import world.deslauriers.service.RestoreService;
-import world.deslauriers.service.dto.BackupAlbum;
+import world.deslauriers.service.dto.AlbumDto;
 import world.deslauriers.service.dto.BackupAlbumImage;
 import world.deslauriers.service.dto.BackupImage;
 
@@ -22,7 +22,7 @@ public class RestoreController {
     }
 
     @Post("/album")
-    public Mono<HttpResponse<?>> restoreAlbum(@Body BackupAlbum backupAlbum){
+    public Mono<HttpResponse<?>> restoreAlbum(@Body AlbumDto backupAlbum){
         return restoreService
                 .restoreAlbum(backupAlbum)
                 .thenReturn(HttpResponse.noContent());

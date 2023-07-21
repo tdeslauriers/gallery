@@ -7,12 +7,11 @@ import io.micronaut.security.annotation.Secured;
 import io.micronaut.security.rules.SecurityRule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import world.deslauriers.domain.Image;
+import world.deslauriers.service.AlbumImageService;
 import world.deslauriers.service.ImageService;
-import world.deslauriers.service.dto.FullResolutionDto;
-import world.deslauriers.service.dto.ImageUpdateDto;
-import world.deslauriers.service.dto.ThumbnailDto;
+import world.deslauriers.service.dto.*;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -20,14 +19,16 @@ import javax.validation.constraints.Size;
 public class ImageController {
 
     protected final ImageService imageService;
+    protected final AlbumImageService albumImageService;
 
-    public ImageController(ImageService imageService) {
+    public ImageController(ImageService imageService, AlbumImageService albumImageService) {
         this.imageService = imageService;
+        this.albumImageService = albumImageService;
     }
 
     @Secured({"GALLERY_READ", "GALLERY_EDIT", "COLD_STORAGE"})
     @Get("/{filename}")
-    public Mono<Image> getImage(String filename){
+    public Mono<ImageDto> getImage(String filename){
         return imageService.getImageByUuid(filename);
     }
 
@@ -58,5 +59,12 @@ public class ImageController {
     public Mono<Void> delete(@Size(min = 2, max = 64) String filename){
         return imageService.deleteImage(filename)
                 .then();
+    }
+
+    @Secured({"GALLERY_EDIT"})
+    @Put("/album_images/delete")
+    public Mono<HttpResponse<?>> deleteAlbumImage(@Body @Valid AlbumImageDto cmd){
+        return albumImageService.deleteAlbumImage(cmd)
+                .map(r -> HttpResponse.noContent());
     }
 }

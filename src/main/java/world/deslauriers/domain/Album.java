@@ -7,7 +7,6 @@ import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.Relation;
 import io.micronaut.serde.annotation.Serdeable;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Set;
@@ -21,6 +20,7 @@ public record Album(
 
 	@Nullable @Size(max = 128) String description,
 
+	@Nullable
 	@Relation(value = Relation.Kind.ONE_TO_MANY, mappedBy = "album")
 	Set<AlbumImage> albumImages
 

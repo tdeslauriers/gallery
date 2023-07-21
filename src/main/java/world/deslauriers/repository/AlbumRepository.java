@@ -11,8 +11,20 @@ import world.deslauriers.domain.Album;
 @R2dbcRepository(dialect = Dialect.MYSQL)
 public interface AlbumRepository extends ReactorCrudRepository<Album, Long> {
 
-    // for menu (no join data)
     Flux<Album> findAllOrderByAlbumDesc();
+
+    // for menu (no join data)
+    @Query("""
+            SELECT DISTINCT
+              a.id,
+              a.album,
+              a.description
+            FROM album a
+              LEFT JOIN album_image ai ON a.id = ai.album_id
+            WHERE ai.image_id IS NOT NULL
+            ORDER BY a.album DESC
+            """)
+    Flux<Album> findPopulated();
 
     Mono<Album> findByAlbum(String album);
 
